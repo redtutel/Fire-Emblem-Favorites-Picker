@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0">
+<title>Favorite Fire Emblem Character Picker</title>
+<style>
+body {
+    background:#FFF;
+    color:#000;
+    font-family:verdana, sans-serif;
+    font-size:10pt;
+    margin:0;
+    padding:10px;
+}
+
+a:link, a:visited {
+    color:#008;
+    font-weight:bold;
+    text-decoration:none;
+}
+
+a:active, a:hover {
+    color:#ACF;
+}
+
+.info {
+    font-weight:bold;
+}
+
+button {
+    font-family:inherit;
+    cursor:pointer;
+    border:0;
+    border-radius:3px;
+    padding:0.3em 0.5em;
+    background:#CCC;
+    color:#000;
+}
+
+button:hover {
+    background:#DDD;
+}
+
+button.disabled {
+    background:#DDD;
+    color:#888;
+    cursor:not-allowed;
+}
+
+button.disabled:hover {
+    background:#DDD;
+}
+
+#container {
+    position:relative;
+    margin-left:-10px;
+    margin-right:-10px;
+    padding:10px;
+    overflow:hidden;
+}
+
+@media (min-width:1024px) {
+    /* Put the found favorites beside the picking div when the window is sufficiently large */
+    #picking {
+        float:left;
+        width:636px;
+    }
+
+    #secondary {
+        margin-left:646px;
+    }
+}
+
+@media (min-width:1300px) {
+    /* Once we get to the point where 636px is less than half of the width of the screen, make the picking div just take up half */
+    #picking {
+        width:50%;
+    }
+
+    #secondary {
+        margin-left:51%;
+    }
+}
+
+#pick {
+    background:#58F;
+    color:#FFF;
+    font-size:larger;
+    font-weight:bold;
+    width:6em;
+    border-radius:5px;
+    margin-right:10px;
+}
+
+#pick.disabled {
+    background:#ACF;
+}
+
+#pick:hover {
+    background:#ACF;
+}
+
+.item-list {
+    padding:0;
+    list-style-type:none;
+    line-height:100px;
+}
+
+.item-list li {
+    margin:0;
+    display:inline-block;
+    height:100px;
+    width:100px;
+    line-height:100px;
+    border:3px solid transparent;
+    text-align:center;
+    position:relative;
+    vertical-align:top;
+    overflow:hidden;
+    border-radius:100%;
+    background:#F7F7F7;
+    color:#000;
+}
+
+.item-list li img {
+    vertical-align:middle;
+    max-height:100%;
+    max-width:100%;
+}
+
+.item-list li span {
+    display:inline-block;
+    vertical-align:middle;
+    line-height:1.2;
+}
+
+@media (max-width:636px) {
+    .item-list {
+        line-height:75px;
+    }
+
+    .item-list li {
+        line-height:75px;
+        height:75px;
+        width:75px;
+    }
+}
+
+@media (max-width:423px) {
+    .item-list {
+        line-height:50px;
+    }
+
+    .item-list li {
+        line-height:50px;
+        height:50px;
+        width:50px;
+    }
+}
+
+#evaluating li {
+    cursor:pointer;
+}
+
+#favorites li {
+    cursor:move;
+}
+
+.item-list li:hover {
+    background:#CDF;
+}
+
+.item-list.sorting li:hover {
+    background:#F7F7F7;
+}
+
+#evaluating li.selected {
+    border:3px solid #7AC;
+}
+
+#evaluating, #buttons {
+    text-align:center;
+    margin:auto;
+}
+
+#evaluating li.notice {
+    width:auto;
+    height:auto;
+    max-width:260px;
+    margin:auto;
+    background:#F7F7F7;
+    border-radius:10px;
+    padding:30px 30px;
+    color:#000;
+    text-align:center;
+    line-height:1.4;
+    cursor:auto;
+    font-size:10pt;
+}
+
+#buttons {
+    margin-top:30px;
+    position:relative;
+    z-index:3;
+}
+</style>
+</head>
+<body>
+<h1>Favorite Fire Emblem Character Picker</h1>
+
+<p>Pick your favorite characters from each list until your absolute favorites are narrowed down.</p>
+
+<p> <b>Include games: </b>
+<label><input type="checkbox" name="games" class="games" value="Mystery of the Emblem"> Shadow Dragon/Mystery of the Emblem</label>
+<label><input type="checkbox" name="games" class="games" value="Shadows of Valencia"> Shadows of Valencia</label>
+<label><input type="checkbox" name="games" class="games" value="Genealogy of the Holy War"> Genealogy of the Holy War</label>
+<label><input type="checkbox" name="games" class="games" value="Thracia 776"> Thracia 776</label>
+<label><input type="checkbox" name="games" class="games" value="Binding Blade"> Binding Blade</label>
+<label><input type="checkbox" name="games" class="games" value="Blazing Blade"> Blazing Blade</label>
+<label><input type="checkbox" name="games" class="games" value="Sacred Stones"> Sacred Stones</label>
+</p>
+
+</p>
+<label><input type="checkbox" name="games" class="games" value="Tellius"> Path of Radiance/Radiant Dawn</label>
+<label><input type="checkbox" name="games" class="games" value="Awakening"> Awakening</label>
+<label><input type="checkbox" name="games" class="games" value="Fates"> Fates</label>
+<label><input type="checkbox" name="games" class="games" value="Tokyo Mirage Sessions #FE"> Tokyo Mirage Sessions #FE</label>
+<label><input type="checkbox" name="games" class="games" value="Cipher"> Cipher</label>
+<label><input type="checkbox" name="games" class="games" value="Heroes"> Heroes</label>
+<label><input type="checkbox" name="games" class="games" value="Warriors"> Warriors</label>
+</p>
+
+<p> <b>Include Classes:</b>
+<label><input type="checkbox" name="Classes" class="Classes" value="Lord"> Lord (class)</label>
+<label><input type="checkbox" name="Classes" class="Classes" value="Mage"> Anima Mage</label>
+<label><input type="checkbox" name="Classes" class="Classes" value="Healer"> Cleric/Priest/Maid</label>
+<label><input type="checkbox" name="Classes" class="Classes" value="Light Mage"> Light Mage</label>
+<label><input type="checkbox" name="Classes" class="Classes" value="Cavalier"> Cavalier</label>
+<label><input type="checkbox" name="Classes" class="Classes" value="Archer"> Archer/Mechanist/Apothecary</label>
+<label><input type="checkbox" name="Classes" class="Classes" value="Fighter"> Fighter/Oni Savage</label>
+</p>
+
+</p>
+<label><input type="checkbox" name="Classes" class="Classes" value="Pegasus Knight"> Pegasus Knight/Kinshi Knight</label>
+<label><input type="checkbox" name="Classes" class="Classes" value="Knight">Knight</label>
+<label><input type="checkbox" name="Classes" class="Classes" value="Villager">Villager/Trainee</label>
+<label><input type="checkbox" name="Classes" class="Classes" value="Swordmaster">Myrmidon/Samurai/Master of Arms</label>
+<label><input type="checkbox" name="Classes" class="Classes" value="Troubadour">Troubadour</label>
+<label><input type="checkbox" name="Classes" class="Classes" value="Beast"> Beast Laguz/Offensive Bird Laguz/Beaststone Users</label>
+<label><input type="checkbox" name="Classes" class="Classes" value="Thief">Thief/Ninja</label>
+</p>
+
+
+</p>
+<label><input type="checkbox" name="Classes" class="Classes" value="Mercenary">Mercenary</label>
+<label><input type="checkbox" name="Classes" class="Classes" value="Dragon"> Manakete/Dragon Laguz/Nohr Prince(ess)/Other Dragon</label>
+<label><input type="checkbox" name="Classes" class="Classes" value="Dark Mage"> Dark Mage/Cantor/Witch/Shaman </label>
+<label><input type="checkbox" name="Classes" class="Classes" value="Dancer"> Dancer/Songstress/Heron/GBA Bard</label>
+<label><input type="checkbox" name="Classes" class="Classes" value="Wyvern Rider"> Wyvern Rider</label>
+</p>
+
+</p>
+<label><input type="checkbox" name="Classes" class="Classes" value="Mage Knight"> Mage Knight/Valkyrie/Dark Knight</label>
+<label><input type="checkbox" name="Classes" class="Classes" value="Enemy Ax"> Pirate/Brigand/Berserker </label>
+<label><input type="checkbox" name="Classes" class="Classes" value="Bow Knight"> Bow Knight/Nomad </label>
+<label><input type="checkbox" name="Classes" class="Classes" value="Soldier"> Soldier/Spear Fighter </label>
+<label><input type="checkbox" name="Classes" class="Classes" value="Merchant"> Vendor/Transporter </label>
+<label><input type="checkbox" name="Classes" class="Classes" value="Emperor"> Emperor/King </label>
+<label><input type="checkbox" name="Classes" class="Classes" value="Goddess"> Non-Dragon Deity </label>
+</p>
+
+</p>
+<label><input type="checkbox" name="Classes" class="Classes" value="Miscellaneous"> Classless/Other</label>
+</p>
+
+<p> <b> Include roles: </b>
+<label><input type="checkbox" name="roles" class="roles" value="Protagonist"> Lord/Main Character</label>
+<label><input type="checkbox" name="roles" class="roles" value="Other"> Other Playable Characters</label>
+<label><input type="checkbox" name="roles" class="roles" value="Antagonist"> Antagonist</label>
+<label><input type="checkbox" name="roles" class="roles" value="NPC"> Allied NPCs</label>
+
+</p>
+
+<b><label>No duplicates?</b>  <input type="checkbox" id="no-Duplicates"></label> (not including the different Annas, or the Fates 2nd generation Doppelgängers) </p>
+
+
+</p> Original script from https://github.com/antialiasis/favorite-picker </p>
+</p>Images from Fire Emblem Wiki</p>
+
+<div id="container">
+
+<div id="picking">
+<ul id="evaluating" class="item-list">
+</ul>
+
+<p id="buttons"><button id="pick">Pick</button> <button id="pass">Pass</button> <button id="undo">Undo</button> <button id="redo">Redo</button> <button class="reset">Reset</button>
+</p>
+</div>
+
+<div id="secondary">
+<h2>Found favorites</h2>
+
+<ol id="favorites" class="item-list">
+</ol>
+</div>
+</div>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="picker.js"></script>
+<script src="picker-ui.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.7.0/Sortable.min.js"></script>
+<script>
+'use strict';
+
+var items = [
+    // Define your items here
+    //{id: '', name: '', image: '.png', game: '', Class: '', role: ''},
+    
+    //Shadow Dragon/Mystery of the Emblem
+    {id: 'Marth', name: 'Marth', image: 'Marth.png', game: 'Mystery of the Emblem', Class: 'Lord', role: 'Protagonist'},
+    {id: 'Caeda', name: 'Caeda', image: 'CaedaBK2DS.png', game: 'Mystery of the Emblem', Class: 'Pegasus Knight', role: 'Other'},
+    {id: 'Cecil', name: 'Cecil', image: 'CecilDS.png', game: 'Mystery of the Emblem', Class: 'Cavalier', role: 'Other'},
+    {id: 'Roderick', name: 'Roderick', image: 'RoddyDS.png', game: 'Mystery of the Emblem', Class: 'Cavalier', role: 'Other'},
+    {id: 'Luke', name: 'Luke', image: 'Luke.png', game: 'Mystery of the Emblem', Class: 'Cavalier', role: 'Other'},
+    {id: 'Arran', name: 'Arran', image: 'Arranfe12.PNG.png', game: 'Mystery of the Emblem', Class: 'Cavalier', role: 'Other'},
+    {id: 'Draug', name: 'Draug', image: 'DraugFE12.PNG.png', game: 'Mystery of the Emblem', Class: 'Knight', role: 'Other'},
+    {id: 'Gordin', name: 'Gordin', image: 'GordinFE12.png', game: 'Mystery of the Emblem', Class: 'Archer', role: 'Other'},
+    {id: 'Ryan', name: 'Ryan', image: 'RyanDS.PNG.png', game: 'Mystery of the Emblem', Class: 'Archer', role: 'Other'},
+    {id: 'Marisha', name: 'Marisha', image: 'Malliesia_FE12_profile.png', game: 'Mystery of the Emblem', Class: 'Healer', role: 'Other'},
+    //Whitewings
+    {id: 'Palla', name: 'Palla', image: 'PallaFE12.PNG.png', game: 'Mystery of the Emblem', Class: 'Pegasus Knight', role: 'Other'},
+    {id: 'Catria', name: 'Catria', image: 'CatriaFE12.png', game: 'Mystery of the Emblem', Class: 'Pegasus Knight', role: 'Other'},
+    {id: 'Est', name: 'Est', image: 'EstFE12.png', game: 'Mystery of the Emblem', Class: 'Pegasus Knight', role: 'Other'},
+    {id: 'Warren', name: 'Warren', image: 'WarrenDS.png', game: 'Mystery of the Emblem', Class: 'Archer', role: 'Other'},
+    {id: 'Julian', name: 'Julian', image: 'JulianFE12.PNG.png', game: 'Mystery of the Emblem', Class: 'Thief', role: 'Other'},
+    {id: 'Lena', name: 'Lena', image: 'Lena_FE12.png', game: 'Mystery of the Emblem', Class: 'Healer', role: 'Other'},
+    {id: 'Matthis', name: 'Matthis', image: 'MatthisFE12.PNG.png', game: 'Mystery of the Emblem', Class: 'Cavalier', role: 'Other'},
+    {id: 'Jubelo', name: 'Jubelo', image: 'YubelloDS.png', game: 'Mystery of the Emblem', Class: 'Mage', role: 'Other'},
+    {id: 'Yuliya', name: 'Yuliya', image: 'YuminaDS.png', game: 'Mystery of the Emblem', Class: 'Healer', role: 'Other'},
+    {id: 'Ogma', name: 'Ogma', image: 'OgmaFE12.PNG.png', game: 'Mystery of the Emblem', Class: 'Mercenary', role: 'Other'},
+    {id: 'Camus', name: 'Camus', image: 'CamusSD.png', game: 'Mystery of the Emblem', Class: 'Cavalier', role: 'Antagonist'},
+    {id: 'Sirius', name: 'Sirius', image: 'Sirius.png', game: 'Mystery of the Emblem', Class: 'Cavalier', role: 'Other', base: 'Camus'},
+    {id: 'Castor', name: 'Castor', image: 'CastorFE12.PNG.png', game: 'Mystery of the Emblem', Class: 'Archer', role: 'Other'},
+    {id: 'Linde', name: 'Linde', image: 'LindeFE12.png', game: 'Mystery of the Emblem', Class: 'Mage', role: 'Other'},
+    {id: 'Rickard', name: 'Rickard', image: 'RickardFE12.PNG.png', game: 'Mystery of the Emblem', Class: 'Thief', role: 'Other'},
+    {id: 'Samuel', name: 'Samuel', image: 'SamtoDS.png', game: 'Mystery of the Emblem', Class: 'Swordmaster', role: 'Other'},
+    {id: 'Wendell', name: 'Wendell', image: 'WendellFE12.PNG.png', game: 'Mystery of the Emblem', Class: 'Mage', role: 'Other'},
+    {id: 'Navarre', name: 'Navarre', image: 'NavarreFE12.png', game: 'Mystery of the Emblem', Class: 'Swordmaster', role: 'Other'},
+    {id: 'Phina', name: 'Phina', image: 'Feena.png', game: 'Mystery of the Emblem', Class: 'Dancer', role: 'Other'},
+    {id: 'Bantu', name: 'Bantu', image: 'BantuFE12.PNG.png', game: 'Mystery of the Emblem', Class: 'Dragon', role: 'Other'},
+    {id: 'Jeorge', name: 'Jeorge', image: 'JeorgeFE12.png', game: 'Mystery of the Emblem', Class: 'Archer', role: 'Other'},
+    {id: 'Cain', name: 'Cain', image: 'CainFE12.png', game: 'Mystery of the Emblem', Class: 'Cavalier', role: 'Other'},
+    {id: 'Abel', name: 'Abel', image: 'AbelFE12.PNG.png', game: 'Mystery of the Emblem', Class: 'Cavalier', role: 'Other'},
+    {id: 'Minerva', name: 'Minerva', image: 'Minerva_FE12.png', game: 'Mystery of the Emblem', Class: 'Wyvern Rider', role: 'Other'},
+    {id: 'Michalis', name: 'Michalis', image: 'Michalis_FE12.png', game: 'Mystery of the Emblem', Class: 'Wyvern Rider', role: 'Antagonist'},
+    {id: 'Maria', name: 'Maria', image: 'MariaSD.png', game: 'Mystery of the Emblem', Class: 'Healer', role: 'Other'},
+    {id: 'Merric', name: 'Merric', image: 'MerricFE12.PNG.png', game: 'Mystery of the Emblem', Class: 'Mage', role: 'Other'},
+    {id: 'Arlen', name: 'Arlen', image: 'EllereanFE12.png', game: 'Mystery of the Emblem', Class: 'Mage', role: 'Other'},
+    {id: 'Xane', name: 'Xane', image: 'Xane.png', game: 'Mystery of the Emblem', Class: 'Dragon', role: 'Other'},
+    {id: 'Tiki', name: 'Young Tiki', image: 'Tiki.png', game: 'Mystery of the Emblem', Class: 'Dragon', role: 'Other'},
+    {id: 'Sheena', name: 'Sheena', image: 'Sheema.png', game: 'Mystery of the Emblem', Class: 'Knight', role: 'Other'},
+    {id: 'Samson', name: 'Samson', image: 'SAMSON.png', game: 'Mystery of the Emblem', Class: 'Mercenary', role: 'Other'},
+    {id: 'Astram', name: 'Astram', image: 'ASTRIA.PNG.png', game: 'Mystery of the Emblem', Class: 'Mercenary', role: 'Other'},
+    {id: 'Roshea', name: 'Roshea', image: 'RosheaFE12.PNG.png', game: 'Mystery of the Emblem', Class: 'Cavalier', role: 'Other'},
+    {id: 'Midia', name: 'Midia', image: 'MidiaFE12.PNG (1).png', game: 'Mystery of the Emblem', Class: 'Cavalier', role: 'Other'},
+    {id: 'Nyna', name: 'Nyna', image: 'NynaSD.png', game: 'Mystery of the Emblem', Class: 'Healer', role: 'Other'},
+    {id: 'Elice', name: 'Elice', image: 'Elice_FE12.png', game: 'Mystery of the Emblem', Class: 'Healer', role: 'Other'},
+    {id: 'Kris', name: 'Kris', image: 'FE12_Avatar.png', game: 'Mystery of the Emblem', Class: 'Miscellaneous', role: 'Protagonist'},
+    {id: 'Wrys', name: 'Wrys', image: 'WrysFE12.png', game: 'Mystery of the Emblem', Class: 'Healer', role: 'Other'},
+    {id: 'Athena', name: 'Athena', image: 'ATHENA.png', game: 'Mystery of the Emblem', Class: 'Swordmaster', role: 'Other'},
+    {id: 'Bord', name: 'Bord', image: 'BordFE12.png', game: 'Mystery of the Emblem', Class: 'Fighter', role: 'Other'},
+    {id: 'Cord', name: 'Cord', image: 'CordSD.png', game: 'Mystery of the Emblem', Class: 'Fighter', role: 'Other'},
+    {id: 'Barst', name: 'Barst', image: 'BarstFE12.png', game: 'Mystery of the Emblem', Class: 'Fighter', role: 'Other'},
+    {id: 'Frey', name: 'Frey', image: 'FreyFE12.PNG.png', game: 'Mystery of the Emblem', Class: 'Cavalier', role: 'Other'},
+    {id: 'Norne', name: 'Norne', image: 'NorneFE12.PNG.png', game: 'Mystery of the Emblem', Class: 'Archer', role: 'Other'},
+    {id: 'Caesar', name: 'Caesar', image: 'CaesarFE12.PNG.png', game: 'Mystery of the Emblem', Class: 'Mercenary', role: 'Other'},
+    {id: 'Radd', name: 'Radd', image: 'RaddFE12.PNG.png', game: 'Mystery of the Emblem', Class: 'Swordmaster', role: 'Other'},
+    {id: 'Roger', name: 'Roger', image: 'RogerDS.png', game: 'Mystery of the Emblem', Class: 'Knight', role: 'Other'},
+    {id: 'Etzel', name: 'Etzel', image: 'EtzelFE12.PNG.png', game: 'Mystery of the Emblem', Class: 'Mage', role: 'Other'},
+    {id: 'Dice', name: 'Dice', image: 'Dice.png', game: 'Mystery of the Emblem', Class: 'Fighter', role: 'Other'},
+    {id: 'Malice', name: 'Malice', image: 'DSMalice.png', game: 'Mystery of the Emblem', Class: 'Swordmaster', role: 'Other'},
+    {id: 'Horace', name: 'Horace', image: 'HoraceFE12.png', game: 'Mystery of the Emblem', Class: 'Knight', role: 'Other'},
+    {id: 'Jake', name: 'Jake', image: 'Jake.png', game: 'Mystery of the Emblem', Class: 'Archer', role: 'Other'},
+    {id: 'Darros', name: 'Darros', image: 'DarrosFE12.png', game: 'Mystery of the Emblem', Class: 'Enemy Ax', role: 'Other'},
+    {id: 'Roberto', name: 'Roberto', image: 'RobertDS.png', game: 'Mystery of the Emblem', Class: 'Bow Knight', role: 'Other'},
+    {id: 'Belf', name: 'Belf', image: 'BelfDS.png', game: 'Mystery of the Emblem', Class: 'Cavalier', role: 'Other'},
+    {id: 'Reiden', name: 'Reiden', image: 'Raiden.png', game: 'Mystery of the Emblem', Class: 'Cavalier', role: 'Other'},
+    {id: 'Beck', name: 'Beck', image: 'Beck.PNG.png', game: 'Mystery of the Emblem', Class: 'Archer', role: 'Other'},
+    {id: 'Dolph', name: 'Dolph', image: 'DolphFE12.PNG.png', game: 'Mystery of the Emblem', Class: 'Knight', role: 'Other'},
+    {id: 'Macellan', name: 'Macellan', image: 'MacellanFE12.PNG.png', game: 'Mystery of the Emblem', Class: 'Knight', role: 'Other'},
+    {id: 'Katarina', name: 'Katarina', image: 'KatarinaFE12.png', game: 'Mystery of the Emblem', Class: 'Mage', role: 'Other'},
+    {id: 'Tomas', name: 'Tomas', image: 'TomasFE12.PNG.png', game: 'Mystery of the Emblem', Class: 'Archer', role: 'Other'},
+    {id: 'Frost', name: 'Frost', image: 'Frost.png', game: 'Mystery of the Emblem', Class: 'Mage', role: 'Other'},
+    {id: 'Wolf', name: 'Wolf', image: 'WolfFE12.PNG.png', game: 'Mystery of the Emblem', Class: 'Bow Knight', role: 'Other'},
+    {id: 'Sedgar', name: 'Sedgar', image: 'SedgarFE12.PNG.png', game: 'Mystery of the Emblem', Class: 'Bow Knight', role: 'Other'},
+    {id: 'Vyland', name: 'Vyland', image: 'VylandFE12.PNG.png', game: 'Mystery of the Emblem', Class: 'Cavalier', role: 'Other'},
+    {id: 'Ymir', name: 'Ymir', image: 'YmirFE12.PNG.png', game: 'Mystery of the Emblem', Class: 'Fighter', role: 'Other'},
+    {id: 'Nagi', name: 'Nagi', image: 'Nagi2.png', game: 'Mystery of the Emblem', Class: 'Dragon', role: 'Other'},
+    {id: 'Malledus', name: 'Malledus', image: 'Malledus.png', game: 'Mystery of the Emblem', Class: 'Healer', role: 'NPC'},
+    {id: 'Original Anna', name: 'Anna', image: 'Shadow_Dragon_Anna.png', game: 'Mystery of the Emblem', Class: 'Merchant', role: 'NPC'},
+    {id: 'Boah', name: 'Boah', image: 'Boah.png', game: 'Mystery of the Emblem', Class: 'Healer', role: 'Other'},
+    {id: 'Hardin', name: 'Hardin the Coyote', image: 'HardinSD.png', game: 'Mystery of the Emblem', Class: 'Cavalier', role: 'Other'},
+    {id: 'Jagen', name: 'Jagen', image: 'Jagen-FE11.png', game: 'Mystery of the Emblem', Class: 'Cavalier', role: 'Other'},
+    {id: 'Gotoh', name: 'Gotoh', image: 'Gato.png', game: 'Mystery of the Emblem', Class: 'Mage', role: 'Other'},
+    {id: 'Lorenz', name: 'Lorenz', image: 'LorenzSD.png', game: 'Mystery of the Emblem', Class: 'Knight', role: 'Other'},
+    {id: 'King of Aurelis', name: 'King of Aurelis', image: 'Aurelis_King.png', game: 'Mystery of the Emblem', Class: 'Miscellaneous', role: 'NPC'},
+    {id: 'Jiol', name: 'Jiol', image: 'JiolSD.png', game: 'Mystery of the Emblem', Class: 'Knight', role: 'Antagonist'},
+    {id: 'Lang', name: 'Lang', image: 'Lang.png', game: 'Mystery of the Emblem', Class: 'Knight', role: 'Antagonist'},
+    {id: 'Clarisse', name: 'Clarisse', image: 'Kuraine.png', game: 'Mystery of the Emblem', Class: 'Archer', role: 'Antagonist'},
+    {id: 'Legion', name: 'Legion', image: 'RoroDS.png', game: 'Mystery of the Emblem', Class: 'Enemy Ax', role: 'Antagonist'},
+    {id: 'Eremiya', name: 'Eremiya', image: 'Eremiya.png', game: 'Mystery of the Emblem', Class: 'Mage', role: 'Antagonist'},
+    {id: 'Gharnef', name: 'Gharnef', image: 'GharnefSD.png', game: 'Mystery of the Emblem', Class: 'Dark Mage', role: 'Antagonist'},
+    {id: 'Emperor Hardin', name: 'Emperor Hardin', image: 'EmperorHardinEvil.png', game: 'Mystery of the Emblem', Class: 'Emperor', role: 'Antagonist', base: 'Hardin'},
+    {id: 'Medeus', name: 'Medeus', image: 'MedeusSD.png', game: 'Mystery of the Emblem', Class: 'Dragon', role: 'Antagonist'},
+    
+    //Shadows of Valencia
+    //{id: '', name: '', image: '.png', game: '', Class: '', role: ''},
+    //Alm's route
+    {id: 'Alm', name: 'Alm', image: 'Alm_HBP_1.png', game: 'Shadows of Valencia', Class: 'Lord', role: 'Protagonist'},
+    {id: 'Gray', name: 'Gray', image: 'Gray_Echoes_Portrait.png', game: 'Shadows of Valencia', Class: 'Villager', role: 'Other'},
+    {id: 'Tobin', name: 'Tobin', image: 'Tobin.png', game: 'Shadows of Valencia', Class: 'Villager', role: 'Other'},
+    {id: 'Kliff', name: 'Kliff', image: 'Kliff_Echoes_Portrait.png', game: 'Shadows of Valencia', Class: 'Villager', role: 'Other'},
+    {id: 'Faye', name: 'Faye', image: 'Faye_Echoes_Portrait.png', game: 'Shadows of Valencia', Class: 'Villager', role: 'Other'},
+    {id: 'Lukas', name: 'Lukas', image: 'Lukas_Echoes_Portrait.png', game: 'Shadows of Valencia', Class: 'Soldier', role: 'Other'},
+    {id: 'Silque', name: 'Silque', image: 'Silque_Echoes_Portrait.png', game: 'Shadows of Valencia', Class: 'Healer', role: 'Other'},
+    {id: 'Clair', name: 'Clair', image: 'Clair.png', game: 'Shadows of Valencia', Class: 'Pegasus Knight', role: 'Other'},
+    {id: 'Clive', name: 'Clive', image: 'Clive_Portrait_Echoes.png', game: 'Shadows of Valencia', Class: 'Cavalier', role: 'Other'},
+    {id: 'Forsyth', name: 'Forsyth', image: 'Forsyth_Half_Portrait.png', game: 'Shadows of Valencia', Class: 'Soldier', role: 'Other'},
+    {id: 'Python', name: 'Python', image: 'Python_Half_Portrait.png', game: 'Shadows of Valencia', Class: 'Archer', role: 'Other'},
+    {id: 'Luthier', name: 'Luthier', image: 'Luthier_Echoes_Portrait.png', game: 'Shadows of Valencia', Class: 'Mage', role: 'Other'},
+    {id: 'Mathilda', name: 'Mathilda', image: 'Mathilda_Echoes_Portrait.png', game: 'Shadows of Valencia', Class: 'Cavalier', role: 'Other'},
+    {id: 'Delthea', name: 'Delthea', image: 'Delthea_Echoes_Portrait.png', game: 'Shadows of Valencia', Class: 'Mage', role: 'Other'},
+    {id: 'Tatiana', name: 'Tatiana', image: 'Tatiana_Echoes_Portrait.png', game: 'Shadows of Valencia', Class: 'Healer', role: 'Other'},
+    {id: 'Zeke', name: 'Zeke', image: 'Zeke.png', game: 'Shadows of Valencia', Class: 'Cavalier', role: 'Other', base: 'Camus'},
+    {id: 'Mycen', name: 'Mycen', image: 'Mycen_Portrait_Echoes.png', game: 'Shadows of Valencia', Class: 'Cavalier', role: 'Other'},
+
+    //Celica's route
+    //{id: '', name: '', image: '.png', game: '', Class: '', role: ''},
+    {id: 'Celica', name: 'Celica', image: 'Celica_Echoes_Portrait.png', game: 'Shadows of Valencia', Class: 'Lord', role: 'Protagonist'},
+	{id: 'Mae', name: 'Mae', image: 'Mae_portrait.png', game: 'Shadows of Valencia', Class: 'Mage', role: 'Other'},
+    {id: 'Boey', name: 'Boey', image: 'Boey_Echoes_Portrait.png', game: 'Shadows of Valencia', Class: 'Mage', role: 'Other'},
+    {id: 'Genny', name: 'Genny', image: 'Genny_portrait.png', game: 'Shadows of Valencia', Class: 'Healer', role: 'Other'},
+    {id: 'Saber', name: 'Saber', image: 'Saber_Portrait_Echoes.png', game: 'Shadows of Valencia', Class: 'Mercenary', role: 'Other'},
+    {id: 'Valbar', name: 'Valbar', image: 'Valbar_Echoes_Portrait.png', game: 'Shadows of Valencia', Class: 'Knight', role: 'Other'},
+    {id: 'Leon', name: 'Leon', image: 'Leon_Echoes_Portrait.png', game: 'Shadows of Valencia', Class: 'Archer', role: 'Other'},
+	{id: 'Kamui', name: 'Kamui', image: 'Kamui_Echoes_Portrait.png', game: 'Shadows of Valencia', Class: 'Mercenary', role: 'Other'},
+	//Whitewings
+	{id: 'SOV Palla', name: 'Palla', image: 'Palla_Echoes_Portrait.png', game: 'Shadows of Valencia', Class: 'Pegasus Knight', role: 'Other', base: 'Palla'},
+    {id: 'SOV Catria', name: 'Catria', image: 'Catria_Echoes_Portrait.png', game: 'Shadows of Valencia', Class: 'Pegasus Knight', role: 'Other', base: 'Catria'},
+    {id: 'SOV Est', name: 'Est', image: 'Est_Echoes_Portrait.png', game: 'Shadows of Valencia', Class: 'Pegasus Knight', role: 'Other', base: 'Est'},
+    {id: 'Jesse', name: 'Jesse', image: 'Jesse.png', game: 'Shadows of Valencia', Class: 'Mercenary', role: 'Other'},
+    {id: 'Atlas', name: 'Atlas', image: 'Atlas.png', game: 'Shadows of Valencia', Class: 'Villager', role: 'Other'},
+    {id: 'Sonya', name: 'Sonya', image: 'Sonya_Echoes_Portrait.png', game: 'Shadows of Valencia', Class: 'Mage', role: 'Other'},
+    {id: 'Deen', name: 'Deen', image: 'Deen_Echoes_Portrait.png', game: 'Shadows of Valencia', Class: 'Myrmidon', role: 'Other'},
+    {id: 'Nomah', name: 'Nomah', image: 'Nomah_Echoes_Portrait.png', game: 'Shadows of Valencia', Class: 'Healer', role: 'Other'},
+    {id: 'Conrad', name: 'Conrad', image: 'Conrad_Portrait.png', game: 'Shadows of Valencia', Class: 'Cavalier', role: 'Other'},
+    {id: 'Mila', name: 'Mila', image: 'Mila_Echoes_Portrait.png', game: 'Shadows of Valencia', Class: 'Dragon', role: 'NPC'},
+    {id: 'Irma', name: 'Irma', image: 'Irma_Echoes_Portrait.png', game: 'Shadows of Valencia', Class: 'Healer', role: 'NPC'},
+    {id: 'Halcyon', name: 'Halcyon', image: 'Hark_Echoes_Portrait.png', game: 'Shadows of Valencia', Class: 'Healer', role: 'NPC'},
+    {id: 'Massena', name: 'Massena', image: 'Massena_Echoes_Portrait.png', game: 'Shadows of Valencia', Class: 'Cavalier', role: 'NPC'},
+    {id: 'Slayde', name: 'Slayde', image: 'Slayde_Echoes_Portrait.png', game: 'Shadows of Valencia', Class: 'Cavalier', role: 'Antagonist'},
+    {id: 'Desaix', name: 'Desaix', image: 'ç.png', game: 'Shadows of Valencia', Class: 'Knight', role: 'Antagonist'},
+    {id: 'Fernand', name: 'Fernand', image: 'Fernand_Echoes_Portrait.png', game: 'Shadows of Valencia', Class: 'Cavalier', role: 'Antagonist'},
+    {id: 'Rudolf', name: 'Rudolf', image: 'Rudolf_Echoes_Portrait.png', game: 'Shadows of Valencia', Class: 'Cavalier', role: 'Antagonist'},
+    {id: 'Berkut', name: 'Berkut', image: 'Berkut_Echoes_Portrait.png', game: 'Shadows of Valencia', Class: 'Cavalier', role: 'Antagonist'},
+    {id: 'Rinea', name: 'Rinea', image: 'Rinea_Portrait.png', game: 'Shadows of Valencia', Class: 'Dark Mage', role: 'Antagonist'},
+    {id: 'Jedah', name: 'Jedah', image: 'Juda_Echoes_Portrait.png', game: 'Shadows of Valencia', Class: 'Dark Mage', role: 'Antagonist'},
+    {id: 'Duma', name: 'Duma', image: 'DumaHalf.png', game: 'Shadows of Valencia', Class: 'Dragon', role: 'Antagonist'},
+    {id: 'Tatarrah', name: 'Tatarrah', image: 'Tatra_Echoes_Portrait.png', game: 'Shadows of Valencia', Class: 'Dark Mage', role: 'Antagonist'},
+    {id: 'Grieth', name: 'Grieth', image: 'Grieth_Echoes_Portrait_Fighter.png', game: 'Shadows of Valencia', Class: 'Mercenary', role: 'Antagonist'},
+    {id: 'Nuibaba', name: 'Nuibaba', image: 'Nuibaba_Echoes_Portrait.png', game: 'Shadows of Valencia', Class: 'Dark Mage', role: 'Antagonist'},
+    {id: 'Marla', name: 'Marla', image: 'Marla_Echoes_Portrait_2.png', game: 'Shadows of Valencia', Class: 'Dark Mage', role: 'Antagonist'},
+    {id: 'Hestia', name: 'Hestia', image: 'Heste_Echoes_Portrait.png', game: 'Shadows of Valencia', Class: 'Dark Mage', role: 'Antagonist'},    
+    
+    //Genealogy of the Holy War
+    //{id: '', name: '', image: '.png', game: '', Class: '', role: ''},
+    //Gen 1
+    {id: 'Sigurd', name: 'Sigurd', image: 'Sigurd.png', game: 'Genealogy of the Holy War', Class: 'Lord', role: 'Protagonist'},
+    {id: 'Naoise', name: 'Naoise', image: 'Noish.png', game: 'Genealogy of the Holy War', Class: 'Cavalier', role: 'Other'},
+    {id: 'Alec', name: 'Alec', image: 'Alec.png', game: 'Genealogy of the Holy War', Class: 'Cavalier', role: 'Other'},
+    {id: 'Arden', name: 'Arden', image: 'Arden.png', game: 'Genealogy of the Holy War', Class: 'Knight', role: 'Other'},
+    {id: 'Azelle', name: 'Azelle', image: 'Azel.png', game: 'Genealogy of the Holy War', Class: 'Mage', role: 'Other'},
+    {id: 'Lex', name: 'Lex', image: 'Lex.png', game: 'Genealogy of the Holy War', Class: 'Cavalier', role: 'Other'},
+    {id: 'Quan', name: 'Quan', image: 'Cuan.png', game: 'Genealogy of the Holy War', Class: 'Cavalier', role: 'Other'},
+    {id: 'Ethlyn', name: 'Ethlyn', image: 'Ethlin.png', game: 'Genealogy of the Holy War', Class: 'Troubadour', role: 'Other'},
+    {id: 'Midir', name: 'Midir', image: 'Midayle.png', game: 'Genealogy of the Holy War', Class: 'Bow Knight', role: 'Other'},
+    {id: 'Dew', name: 'Dew', image: 'Dew.png', game: 'Genealogy of the Holy War', Class: 'Thief', role: 'Other'},
+    {id: 'Edain', name: 'Edain', image: 'Adean.png', game: 'Genealogy of the Holy War', Class: 'Healer', role: 'Other'},
+    {id: 'Ayra', name: 'Ayra', image: 'Ira.png', game: 'Genealogy of the Holy War', Class: 'Swordmaster', role: 'Other'},
+    {id: 'Deirdre', name: 'Deirdre', image: 'Diadora.png', game: 'Genealogy of the Holy War', Class: 'Light Mage', role: 'Other'},
+    {id: 'Jamke', name: 'Jamke', image: 'Jamka.png', game: 'Genealogy of the Holy War', Class: 'Archer', role: 'Other'},
+    {id: 'Chulainn', name: 'Chulainn', image: 'Holyn.png', game: 'Genealogy of the Holy War', Class: 'Swordmaster', role: 'Other'},
+    {id: 'Lachesis', name: 'Lachesis', image: 'RaquesisFE4.png', game: 'Genealogy of the Holy War', Class: 'Healer', role: 'Other'},
+    {id: 'Beowolf', name: 'Beowolf', image: 'Beowolf.png', game: 'Genealogy of the Holy War', Class: 'Cavalier', role: 'Other'},
+    {id: 'Lewyn', name: 'Lewyn', image: 'Levin1.png', game: 'Genealogy of the Holy War', Class: 'Mage', role: 'Other'},
+    {id: 'Silvia', name: 'Silvia', image: 'Sylvia.png', game: 'Genealogy of the Holy War', Class: 'Dancer', role: 'Other'},
+    {id: 'Erinys', name: 'Erinys', image: 'Fury.png', game: 'Genealogy of the Holy War', Class: 'Pegasus Knight', role: 'Other'},
+    {id: 'Tailtiu', name: 'Tailtiu', image: 'Tiltyu.png', game: 'Genealogy of the Holy War', Class: 'Mage', role: 'Other'},
+    {id: 'Claud', name: 'Claud', image: 'Claude.png', game: 'Genealogy of the Holy War', Class: 'Healer', role: 'Other'},
+    {id: 'Brigid', name: 'Brigid', image: 'Briggid.png', game: 'Genealogy of the Holy War', Class: 'Archer', role: 'Other'},
+    {id: 'Oifey', name: 'Oifey', image: 'Oifaye02.png', game: 'Genealogy of the Holy War', Class: 'Cavalier', role: 'Other'},
+    {id: 'Young Oifey', name: 'Oifey', image: 'Oifey1.png', game: 'Genealogy of the Holy War', Class: 'Miscellaneous', role: 'NPC', base: 'Oifey'},
+    {id: 'Shanan', name: 'Shannan', image: 'Shannan02.png', game: 'Genealogy of the Holy War', Class: 'Swordmaster', role: 'Other'},
+    {id: 'Young Shanan', name: 'Shanan', image: 'Shanan1.png', game: 'Genealogy of the Holy War', Class: 'Miscellaneous', role: 'NPC', base: 'Shanan'},
+    {id: 'Eldigan', name: 'Eldigan', image: 'Eltshan.png', game: 'Genealogy of the Holy War', Class: 'Cavalier', role: 'NPC'},
+    {id: 'Rahna', name: 'Rahna', image: 'Lahna.png', game: 'Genealogy of the Holy War', Class: 'Miscellaneous', role: 'NPC'},
+    {id: 'Byron', name: 'Byron', image: 'Vylon.png', game: 'Genealogy of the Holy War', Class: 'Cavalier', role: 'NPC'},
+    {id: 'Manfroy', name: 'Manfroy', image: 'Manfroy.png', game: 'Genealogy of the Holy War', Class: 'Dark Mage', role: 'Antagonist'},
+    {id: 'Arvis', name: 'Arvis', image: 'Alvis1.png', game: 'Genealogy of the Holy War', Class: 'Mage', role: 'Antagonist'},
+    {id: 'Aida', name: 'Aida', image: 'Aida1.png', game: 'Genealogy of the Holy War', Class: 'Mage', role: 'Antagonist'},
+    {id: 'Reptor', name: 'Reptor', image: 'Leptor.png', game: 'Genealogy of the Holy War', Class: 'Knight', role: 'Antagonist'},
+    {id: 'Lombard', name: 'Lombard', image: 'Langobalt.png', game: 'Genealogy of the Holy War', Class: 'Knight', role: 'Antagonist'},
+    {id: 'Travant', name: 'Travant', image: 'Trabant1.png', game: 'Genealogy of the Holy War', Class: 'Wyvern Rider', role: 'Antagonist'},
+    {id: 'Andorey', name: 'Andorey', image: 'Andre_FE4.png', game: 'Genealogy of the Holy War', Class: 'Bow Knight', role: 'Antagonist'},
+    
+    //Gen 2
+    //{id: '', name: '', image: '.png', game: '', Class: '', role: ''},
+    {id: 'Seliph', name: 'Seliph', image: 'Celice.png', game: 'Genealogy of the Holy War', Class: 'Lord', role: 'Protagonist'},
+    {id: 'Lana', name: 'Lana', image: 'Lana1.png', game: 'Genealogy of the Holy War', Class: 'Healer', role: 'Other'},
+    {id: 'Muirne', name: 'Muirne', image: 'Mana-rana.png', game: 'Genealogy of the Holy War', Class: 'Healer', role: 'Other'},
+    {id: 'Larcei', name: 'Larcei', image: 'Lakche.png', game: 'Genealogy of the Holy War', Class: 'Swordmaster', role: 'Other'},
+    {id: 'Creidne', name: 'Creidne', image: 'Radney.png', game: 'Genealogy of the Holy War', Class: 'Swordmaster', role: 'Other'},
+    {id: 'Ulster', name: 'Ulster', image: 'Skasaher.png', game: 'Genealogy of the Holy War', Class: 'Swordmaster', role: 'Other'},
+    {id: 'Dalvin', name: 'Dalvin', image: 'Rodolbal.png', game: 'Genealogy of the Holy War', Class: 'Swordmaster', role: 'Other'},
+	{id: 'Tristan', name: 'Tristan', image: 'Tristan-delmud.png', game: 'Genealogy of the Holy War', Class: 'Cavalier', role: 'Other'},
+    {id: 'Lester', name: 'Lester', image: 'Lesterp.png', game: 'Genealogy of the Holy War', Class: 'Bow Knight', role: 'Other'},
+    {id: 'Deimne', name: 'Deimne', image: 'Dimna-lester.png', game: 'Genealogy of the Holy War', Class: 'Bow Knight', role: 'Other'},
+    {id: 'Julia', name: 'Julia', image: 'Yuria.png', game: 'Genealogy of the Holy War', Class: 'Light Mage', role: 'Protagonist'},
+    {id: 'Fee', name: 'Fee', image: 'Phee.png', game: 'Genealogy of the Holy War', Class: 'Pegasus Knight', role: 'Other'},
+    {id: 'Hermina', name: 'Hermina', image: 'Femina-fee.png', game: 'Genealogy of the Holy War', Class: 'Pegasus Knight', role: 'Other'},
+    {id: 'Genealogy Arthur', name: 'Arthur', image: 'Arthur.png', game: 'Genealogy of the Holy War', Class: 'Mage', role: 'Other'},
+    {id: 'Amid', name: 'Amid', image: 'Amid-arthur.png', game: 'Genealogy of the Holy War', Class: 'Mage', role: 'Other'},
+    {id: 'Iuchar', name: 'Iuchar', image: 'Johan.png', game: 'Genealogy of the Holy War', Class: 'Cavalier', role: 'Other'},
+    {id: 'Iucharba', name: 'Iucharba', image: 'Johalva.png', game: 'Genealogy of the Holy War', Class: 'Cavalier', role: 'Other'},
+    {id: 'Patty', name: 'Patty', image: 'Patty.png', game: 'Genealogy of the Holy War', Class: 'Thief', role: 'Other'},
+    {id: 'Daisy', name: 'Daisy', image: 'Daisy-patty.png', game: 'Genealogy of the Holy War', Class: 'Thief', role: 'Other'},
+    {id: 'Jeanne', name: 'Jeanne', image: 'Janne-nanna.png', game: 'Genealogy of the Holy War', Class: 'Troubadour', role: 'Other'},
+    {id: 'Ares', name: 'Ares', image: 'Aless.png', game: 'Genealogy of the Holy War', Class: 'Cavalier', role: 'Other'},
+    {id: 'Lene', name: 'Lene', image: 'Lynn.png', game: 'Genealogy of the Holy War', Class: 'Dancer', role: 'Other'},
+    {id: 'Laylea', name: 'Laylea', image: 'Laylea-leen.png', game: 'Genealogy of the Holy War', Class: 'Dancer', role: 'Other'},
+    {id: 'Tine', name: 'Tine', image: 'Tinny.png', game: 'Genealogy of the Holy War', Class: 'Mage', role: 'Other'},
+    {id: 'Linda', name: 'Linda', image: 'Linda-tinny.png', game: 'Genealogy of the Holy War', Class: 'Mage', role: 'Other'},
+    {id: 'Hawk', name: 'Hawk', image: 'Hawk-sety.png', game: 'Genealogy of the Holy War', Class: 'Mage', role: 'Other'},
+    {id: 'Hannibal', name: 'Hannibal', image: 'Hannibal.png', game: 'Genealogy of the Holy War', Class: 'Knight', role: 'Other'},
+    {id: 'Coirpre', name: 'Coirpre', image: 'Corple.png', game: 'Genealogy of the Holy War', Class: 'Healer', role: 'Other'},
+    {id: 'Charlot', name: 'Charlot', image: 'Sharlow-corple.png', game: 'Genealogy of the Holy War', Class: 'Healer', role: 'Other'},
+    {id: 'Altena', name: 'Altena', image: 'Altenna.png', game: 'Genealogy of the Holy War', Class: 'Wyvern Rider', role: 'Other'},
+    {id: 'Possesed Lewyn', name: 'Gen 2Lewyn', image: 'Levin2.png', game: 'Genealogy of the Holy War', Class: 'Mage', role: 'NPC', base: 'Lewyn'},
+    {id: 'Palmark', name: 'Palmark', image: 'Palmark.png', game: 'Genealogy of the Holy War', Class: 'Healer', role: 'NPC'},
+    {id: 'Felipe', name: 'Felipe', image: 'Felipe_FE4.png', game: 'Genealogy of the Holy War', Class: 'Healer', role: 'NPC'},
+    {id: 'Emperor Arvis', name: 'Emperor Arvis', image: 'Arvis.png', game: 'Genealogy of the Holy War', Class: 'Emperor', role: 'Antagonist', base: 'Arvis'},
+    {id: 'Julius', name: 'Julius', image: 'Yurius.png', game: 'Genealogy of the Holy War', Class: 'Dark Mage', role: 'Antagonist'},
+    {id: 'Danann', name: 'Danann', image: 'Danan_(Face_Sprite).png', game: 'Genealogy of the Holy War', Class: 'Knight', role: 'Antagonist'},
+    {id: 'Ishtore', name: 'Ishtore', image: 'IshtoreFE4.png', game: 'Genealogy of the Holy War', Class: 'Mage', role: 'Antagonist'},
+    {id: 'Bloon', name: 'Bloon', image: 'BlumeFE4.png', game: 'Genealogy of the Holy War', Class: 'Knight', role: 'Antagonist'},
+    {id: 'Ishtar', name: 'Ishtar', image: 'Portrait_ishtar_fe04.png', game: 'Genealogy of the Holy War', Class: 'Mage', role: 'Antagonist'},
+    {id: 'Arion', name: 'Arion', image: 'AreoneFE4.png', game: 'Genealogy of the Holy War', Class: 'Wyvern Rider', role: 'Antagonist'},
+    {id: 'Brian', name: 'Brian', image: 'Burian_Face_Sprite.png', game: 'Genealogy of the Holy War', Class: 'Cavalier', role: 'Antagonist'},
+    {id: 'Scopio', name: 'Scopio', image: 'Scopio.png', game: 'Genealogy of the Holy War', Class: 'Cavalier', role: 'Antagonist'},
+    {id: 'Hilda', name: 'Hilda', image: 'HildaFE4.png', game: 'Genealogy of the Holy War', Class: 'Mage', role: 'Antagonist'},
+    
+    //Thracia 776
+    //{id: '', name: '', image: '.png', game: '', Class: '', role: ''},
+ 
+    {id: 'Leif', name: 'Leif', image: 'Fire_Emblem_5_Leaf_Portrait.png', game: 'Thracia 776', Class: 'Lord', role: 'Protagonist'},
+    {id: 'Genealogy Leif', name: 'Leif', image: 'Fire_Emblem_4_Leaf_Portrait.png', game: 'Genealogy of the Holy War', Class: 'Lord', role: 'Other', base: 'Leif'},
+    {id: 'Finn', name: 'Finn', image: 'Fin.png', game: 'Thracia 776', Class: 'Cavalier', role: 'Other'},
+    {id: 'Young Finn', name: 'Finn', image: 'Fin1.png', game: 'Genealogy of the Holy War', Class: 'Cavalier', role: 'Other', base: 'Finn'},
+    {id: 'Genealogy Finn', name: 'Finn', image: 'Fin02.png', game: 'Genealogy of the Holy War', Class: 'Cavalier', role: 'Other', base: 'Finn'},
+    {id: 'Diarmuid', name: 'Diarmuid', image: 'DelmudFE5.png', game: 'Thracia 776', Class: 'Bow Knight', role: 'Other'},
+    {id: 'Genealogy Diarmuid', name: 'Diarmuid', image: 'Delmud.png', game: 'Genealogy of the Holy War', Class: 'Cavalier', role: 'Other', base: 'Diarmuid'},
+    {id: 'Nanna', name: 'Nanna', image: 'NannaFE5.png', game: 'Thracia 776', Class: 'Troubadour', role: 'Other'},
+    {id: 'Genealogy Nanna', name: 'Nanna', image: 'Nanna.png', game: 'Genealogy of the Holy War', Class: 'Troubadour', role: 'Other', base: 'Nanna'},
+    {id: 'Febail', name: 'Febail', image: 'Faval1.png', game: 'Genealogy of the Holy War', Class: 'Archer', role: 'Other'},
+	{id: 'Asaello', name: 'Asaello', image: 'Asaello-faval.png', game: 'Genealogy of the Holy War', Class: 'Archer', role: 'Other'},
+   {id: 'Ced', name: 'Ced', image: 'SetyFE5.png', game: 'Thracia 776', Class: 'Mage', role: 'Other'},
+   {id: 'Genealogy Ced', name: 'Ced', image: 'Sety.png', game: 'Genealogy of the Holy War', Class: 'Mage', role: 'Other', base: 'Ced'},
+   {id: 'Orsin', name: 'Orsin', image: 'Othin.png', game: 'Thracia 776', Class: 'Fighter', role: 'Other'},
+   {id: 'Halvan', name: 'Halvan', image: 'FE5_Halvan_Portrait.png', game: 'Thracia 776', Class: 'Fighter', role: 'Other'},
+   {id: 'Eyvel', name: 'Eyvel', image: 'EvayleFE5.png', game: 'Thracia 776', Class: 'Swordmaster', role: 'Other', base: 'Brigid'},
+   {id: 'Dagdar', name: 'Dagdar', image: 'DagdarFE5.png', game: 'Thracia 776', Class: 'Fighter', role: 'Other'},
+   {id: 'Tanya', name: 'Tanya', image: 'Tanya.png', game: 'Thracia 776', Class: 'Archer', role: 'Other'},
+   {id: 'Marty', name: 'Marty', image: 'Marty.png', game: 'Thracia 776', Class: 'Enemy Ax', role: 'Other'},
+   {id: 'Ronan', name: 'Ronan', image: 'Ronan.png', game: 'Thracia 776', Class: 'Archer', role: 'Other'},
+   {id: 'Safy', name: 'Safy', image: 'Saphy.png', game: 'Thracia 776', Class: 'Healer', role: 'Other'},
+   {id: 'Lifis', name: 'Lifis', image: 'Lifis.png', game: 'Thracia 776', Class: 'Thief', role: 'Other'},
+   {id: 'Machyua', name: 'Machyua', image: 'MachyuaFE5.png', game: 'Thracia 776', Class: 'Swordmaster', role: 'Other'},
+   {id: 'Brighton', name: 'Brighton', image: 'BrightonFE5.png', game: 'Thracia 776', Class: 'Cavalier', role: 'Other'},
+   {id: 'Lara', name: 'Lara', image: 'Lara.png', game: 'Thracia 776', Class: 'Dancer', role: 'Other'},
+   {id: 'Fergus', name: 'Fergus', image: 'Fergus.png', game: 'Thracia 776', Class: 'Cavalier', role: 'Other'},
+   {id: 'Karin', name: 'Karin', image: 'Karin.png', game: 'Thracia 776', Class: 'Pegasus Knight', role: 'Other'},
+   {id: 'Dalsin', name: 'Dalsin', image: 'DalsinFE5.png', game: 'Thracia 776', Class: 'Knight', role: 'Other'},
+   {id: 'Asbel', name: 'Asbel', image: 'Asvel_portrait.png', game: 'Thracia 776', Class: 'Mage', role: 'Other'},
+   {id: 'Hicks', name: 'Hicks', image: 'HicksFE5.png', game: 'Thracia 776', Class: 'Cavalier', role: 'Other'},
+   {id: 'Shiva', name: 'Shiva', image: 'Shiva.png', game: 'Thracia 776', Class: 'Swordmaster', role: 'Other'},
+   {id: 'Carrion', name: 'Carrion', image: 'Carrion.png', game: 'Thracia 776', Class: 'Cavalier', role: 'Other'},
+   {id: 'Selphina', name: 'Selphina', image: 'Selphina.png', game: 'Thracia 776', Class: 'Bow Knight', role: 'Other'},
+   {id: 'Kein', name: 'Cain', image: 'Kein.png', game: 'Thracia 776', Class: 'Cavalier', role: 'Other'},
+   {id: 'Alva', name: 'Alva', image: 'Alva.png', game: 'Thracia 776', Class: 'Cavalier', role: 'Other'},
+   {id: 'Robert', name: 'Robert', image: 'Robert.png', game: 'Thracia 776', Class: 'Bow Knight', role: 'Other'},
+   {id: 'Fred', name: 'Fred', image: 'FredFE5.png', game: 'Thracia 776', Class: 'Bow Knight', role: 'Other'},
+   {id: 'Olwen', name: 'Olwen', image: 'Olwen.png', game: 'Thracia 776', Class: 'Mage Knight', role: 'Other'},
+   {id: 'Mareeta', name: 'Mareeta', image: 'MareetaFE5.png', game: 'Thracia 776', Class: 'Swordmaster', role: 'Other'},
+   {id: 'Salem', name: 'Salem', image: 'FE5_Salem_Portrait.png', game: 'Thracia 776', Class: 'Dark Mage', role: 'Other'},
+   {id: 'Pahn', name: 'Pahn', image: 'Pahn.png', game: 'Thracia 776', Class: 'Thief', role: 'Other'},
+   {id: 'Troude', name: 'Troude', image: 'TrewdFE5.png', game: 'Thracia 776', Class: 'Swordmaster', role: 'Other'},
+   {id: 'Tina', name: 'Tina', image: 'Tina.png', game: 'Thracia 776', Class: 'Healer', role: 'Other'},
+   {id: 'Glade', name: 'Glade', image: 'Glade.png', game: 'Thracia 776', Class: 'Cavalier', role: 'Other'},
+   {id: 'Dean', name: 'Dean', image: 'Dean.png', game: 'Thracia 776', Class: 'Wyvern Rider', role: 'Other'},
+   {id: 'Eda', name: 'Eda', image: 'Eda.png', game: 'Thracia 776', Class: 'Wyvern Rider', role: 'Other'},
+   {id: 'Homer', name: 'Homer', image: 'Homer.png', game: 'Thracia 776', Class: 'Mage', role: 'Other'},
+   {id: 'Linoan', name: 'Linoan', image: 'FE5_Linoan_Portrait.png', game: 'Thracia 776', Class: 'Light Mage', role: 'Other'},
+   {id: 'Ralf', name: 'Ralf', image: 'RalphFE5.png', game: 'Thracia 776', Class: 'Mercenary', role: 'Other'}, 
+   {id: 'Ilios', name: 'Ilios', image: 'Eyrios.png', game: 'Thracia 776', Class: 'Mage Knight', role: 'Other'},
+   {id: 'Sleuf', name: 'Sleuf', image: 'Sleuf.png', game: 'Thracia 776', Class: 'Healer', role: 'Other'},
+   {id: 'Misha', name: 'Misha', image: 'Misha.png', game: 'Thracia 776', Class: 'Pegasus Knight', role: 'Other'}, 
+   {id: 'Sara', name: 'Sara', image: 'Sara.png', game: 'Thracia 776', Class: 'Light Mage', role: 'Other'},
+   {id: 'Shannam', name: 'Shannam', image: 'ShanamFE5.png', game: 'Thracia 776', Class: 'Swordmaster', role: 'Other'},
+   {id: 'Miranda', name: 'Miranda', image: 'Miranda.png', game: 'Thracia 776', Class: 'Mage', role: 'Other'},
+   {id: 'Xavier', name: 'Xavier', image: 'XavierFE5.png', game: 'Thracia 776', Class: 'Knight', role: 'Other'},
+   {id: 'Amalda', name: 'Amalda', image: 'Amalda.png', game: 'Thracia 776', Class: 'Cavalier', role: 'Other'},
+   {id: 'Conomor', name: 'Conomor', image: 'ConomoreFE5.png', game: 'Thracia 776', Class: 'Cavalier', role: 'Other'},
+   {id: 'Saias', name: 'Saias', image: 'Fire_Emblem_5_Cyas_Portrait.png', game: 'Thracia 776', Class: 'Mage', role: 'Other'},
+   {id: 'Galzus', name: 'Galzus', image: 'GalzusFE5.png', game: 'Thracia 776', Class: 'Mercenary', role: 'Other'},
+   {id: 'August', name: 'August', image: 'August.png', game: 'Thracia 776', Class: 'Healer', role: 'NPC'},
+   {id: 'Dorias', name: 'Dorias', image: 'Dorias.png', game: 'Thracia 776', Class: 'Miscellaneous', role: 'NPC'},
+   {id: 'Raydrik', name: 'Raydrik', image: 'LeidrickFE5.png', game: 'Thracia 776', Class: 'Knight', role: 'Antagonist'},
+   {id: 'Veld', name: 'Veld', image: 'BeldoFE5.png', game: 'Thracia 776', Class: 'Dark Mage', role: 'Antagonist'},
+   {id: 'Kempf', name: 'Kempf', image: 'KempfFE5.png', game: 'Thracia 776', Class: 'Mage Knight', role: 'Antagonist'},
+   {id: 'Reinhardt', name: 'Reinhardt', image: 'ReinhardtFE5.png', game: 'Thracia 776', Class: 'Mage Knight', role: 'Antagonist'},
+   
+    //Binding Blade
+    //{id: '', name: '', image: '.png', game: '', Class: '', role: ''},
+    {id: 'Roy', name: 'Roy', image: 'Royingame.png', game: 'Binding Blade', Class: 'Lord', role: 'Protagonist'},
+    {id: 'Marcus', name: 'Marcus', image: 'Marcus.png', game: 'Binding Blade', Class: 'Cavalier', role: 'Other'},
+    {id: 'Alen', name: 'Alen', image: 'Alanp.png', game: 'Binding Blade', Class: 'Cavalier', role: 'Other'},
+    {id: 'Lance', name: 'Lance', image: 'Lance.png', game: 'Binding Blade', Class: 'Cavalier', role: 'Other'},
+    {id: 'Wolt', name: 'Wolt', image: 'Woltingame.png', game: 'Binding Blade', Class: 'Archer', role: 'Other'},
+    {id: 'Bors', name: 'Bors', image: 'Bors.png', game: 'Binding Blade', Class: 'Knight', role: 'Other'},
+    {id: 'Merlinus', name: 'Merlinus', image: 'Fire_Emblem_6_Merlinus_Portrait.png', game: 'Binding Blade', Class: 'Merchant', role: 'Other'},
+    {id: 'Elen', name: 'Elen', image: 'Elen.png', game: 'Binding Blade', Class: 'Healer', role: 'Other'},
+    {id: 'Dieck', name: 'Dieck', image: 'DekeFE6.png', game: 'Binding Blade', Class: 'Mercenary', role: 'Other'},
+    {id: 'Wade', name: 'Wade', image: 'Wade.png', game: 'Binding Blade', Class: 'Fighter', role: 'Other'},
+    {id: 'Lot', name: 'Lot', image: 'Lot.png', game: 'Binding Blade', Class: 'Fighter', role: 'Other'},
+    {id: 'Shanna', name: 'Shanna', image: 'Thany.png', game: 'Binding Blade', Class: 'Pegasus Knight', role: 'Other'},
+    {id: 'Chad', name: 'Chad', image: 'Chad.png', game: 'Binding Blade', Class: 'Thief', role: 'Other'},
+    {id: 'Lugh', name: 'Lugh', image: 'Lughingame.png', game: 'Binding Blade', Class: 'Mage', role: 'Other'},   
+    {id: 'Clarine', name: 'Clarine', image: 'Clarice.png', game: 'Binding Blade', Class: 'Troubadour', role: 'Other'},
+    {id: 'Rutger', name: 'Rutger', image: 'RutgerFE6.png', game: 'Binding Blade', Class: 'Swordmaster', role: 'Other'},
+	{id: 'Saul', name: 'Saul', image: 'Saul.png', game: 'Binding Blade', Class: 'Healer', role: 'Other'},
+    {id: 'Dorothy', name: 'Dorothy', image: 'Dorothy.png', game: 'Binding Blade', Class: 'Archer', role: 'Other'},
+    {id: 'Sue', name: 'Sue', image: 'SueFE6.png', game: 'Binding Blade', Class: 'Bow Knight', role: 'Other'},
+    {id: 'Zealot', name: 'Zealot', image: 'ZealotFE6.png', game: 'Binding Blade', Class: 'Cavalier', role: 'Other'},
+    {id: 'Trec', name: 'Trec', image: 'TreckFE6.png', game: 'Binding Blade', Class: 'Cavalier', role: 'Other'},
+    {id: 'Noah', name: 'Noah', image: 'NoahFE6.png', game: 'Binding Blade', Class: 'Cavalier', role: 'Other'},
+    {id: 'Astolfo', name: 'Astolfo', image: 'AstohlFE6.png', game: 'Binding Blade', Class: 'Thief', role: 'Other'},
+    {id: 'Lilina', name: 'Lilina', image: 'Lilinaingame.png', game: 'Binding Blade', Class: 'Mage', role: 'Other'},
+    {id: 'Gwendolyn', name: 'Gwendolyn', image: 'WendyFE6.png', game: 'Binding Blade', Class: 'Knight', role: 'Other'},
+    {id: 'Barthe', name: 'Barthe', image: 'BarthFE6.png', game: 'Binding Blade', Class: 'Knight', role: 'Other'},
+    {id: 'Ogier', name: 'Ogier', image: 'Oujayingame.png', game: 'Binding Blade', Class: 'Mercenary', role: 'Other'},
+    {id: 'Fir', name: 'Fir', image: 'Firingame.png', game: 'Binding Blade', Class: 'Swordmaster', role: 'Other'},
+    {id: 'Sin', name: 'Sin', image: 'ShinFE6.png', game: 'Binding Blade', Class: 'Bow Knight', role: 'Other'},
+    {id: 'Gonzales', name: 'Gonzales', image: 'GonzalesFE6.png', game: 'Binding Blade', Class: 'Enemy Ax', role: 'Other'},
+    {id: 'Geese', name: 'Geese', image: 'Geese-1FE6.png', game: 'Binding Blade', Class: 'Enemy Ax', role: 'Other'},
+    {id: 'Klein', name: 'Klein', image: 'Kleiningame.png', game: 'Binding Blade', Class: 'Archer', role: 'Other'},
+    {id: 'Thea', name: 'Thea', image: 'TateFE6.png', game: 'Binding Blade', Class: 'Pegasus Knight', role: 'Other'},
+    {id: 'Larum', name: 'Larum', image: 'LalumFE6.png', game: 'Binding Blade', Class: 'Dancer', role: 'Other'},
+    {id: 'Echidna', name: 'Echidna', image: 'Echidnaingame.png', game: 'Binding Blade', Class: 'Mercenary', role: 'Other'},
+    {id: 'Elffin', name: 'Elffin', image: 'ElphinFE6.png', game: 'Binding Blade', Class: 'Dancer', role: 'Other'},
+    {id: 'Bartre', name: 'Bartre', image: 'Bartre_FnT.png', game: 'Binding Blade', Class: 'Fighter', role: 'Other'},
+    {id: 'Raigh', name: 'Raigh', image: 'Rayingame.png', game: 'Binding Blade', Class: 'Dark Mage', role: 'Other'},
+    {id: 'Cath', name: 'Cath', image: 'CathFE6.png', game: 'Binding Blade', Class: 'Thief', role: 'Other'},
+    {id: 'Melady', name: 'Melady', image: 'MiredyFE6.png', game: 'Binding Blade', Class: 'Wyvern Rider', role: 'Other'},
+    {id: 'Perceval', name: 'Perceval', image: 'Percivalingame.png', game: 'Binding Blade', Class: 'Cavalier', role: 'Other'},
+    {id: 'Cecilia', name: 'Cecilia', image: 'Ceciliaingame.png', game: 'Binding Blade', Class: 'Mage Knight', role: 'Other'},
+    {id: 'Sophia', name: 'Sophia', image: 'Sophia.png', game: 'Binding Blade', Class: 'Dark Mage', role: 'Other'},
+    {id: 'Igrene', name: 'Igrene', image: 'Igrene-1FE6.png', game: 'Binding Blade', Class: 'Archer', role: 'Other'},
+    {id: 'Garret', name: 'Garret', image: 'GarretFE6.png', game: 'Binding Blade', Class: 'Enemy Ax', role: 'Other'},
+    {id: 'Fae', name: 'Fae', image: 'FaeFE6.png', game: 'Binding Blade', Class: 'Dragon', role: 'Other'},
+    {id: 'Hugh', name: 'Hugh', image: 'Hugh-1FE6.png', game: 'Binding Blade', Class: 'Mage', role: 'Other'},
+    {id: 'Zeiss', name: 'Zeiss', image: 'ZeisFE6.png', game: 'Binding Blade', Class: 'Wyvern Rider', role: 'Other'},
+    {id: 'Douglas', name: 'Douglas', image: 'DouglasFE6.png', game: 'Binding Blade', Class: 'Knight', role: 'Other'},
+    {id: 'Niime', name: 'Niime', image: 'NiimeFE6.png', game: 'Binding Blade', Class: 'Dark Mage', role: 'Other'},
+    {id: 'Dayan', name: 'Dayan', image: 'DayanFE6.png', game: 'Binding Blade', Class: 'Bow Knight', role: 'Other'},
+    {id: 'Juno', name: 'Juno', image: 'Yuno.png', game: 'Binding Blade', Class: 'Pegasus Knight', role: 'Other'},
+    {id: 'Yoder', name: 'Yoder', image: 'YodelFE6.png', game: 'Binding Blade', Class: 'Healer', role: 'Other'},
+    {id: 'Karel', name: 'Karel', image: 'Karel_FnT.png', game: 'Binding Blade', Class: 'Swordmaster', role: 'Other'},
+    {id: 'Guinevere', name: 'Guinevere', image: 'Guinevere.png', game: 'Binding Blade', Class: 'Mage', role: 'NPC'},
+    {id: 'Narcian', name: 'Narcian', image: 'NarshenFE6.png', game: 'Binding Blade', Class: 'Wyvern Rider', role: 'Antagonist'},
+    {id: 'Galle', name: 'Galle', image: 'GaleFE6.png', game: 'Binding Blade', Class: 'Wyvern Rider', role: 'Antagonist'},
+    {id: 'Brunnya', name: 'Brunnya', image: 'BrunyaFE6.png', game: 'Binding Blade', Class: 'Mage', role: 'Antagonist'},
+    {id: 'Murdock', name: 'Murdock', image: 'Murdoch-1FE6.png', game: 'Binding Blade', Class: 'Knight', role: 'Antagonist'},
+    {id: 'Zephiel', name: 'Zephiel', image: 'Zephiel_FE6.png', game: 'Binding Blade', Class: 'Emperor', role: 'Antagonist'},
+    {id: 'Idunn', name: 'Idunn', image: 'Idenn2.png', game: 'Binding Blade', Class: 'Dragon', role: 'Antagonist'},
+    {id: 'Jahn', name: 'Jahn', image: 'Jahn.png', game: 'Binding Blade', Class: 'Dragon', role: 'Antagonist'},
+    
+    //Blazing Blade
+    //{id: '', name: '', image: '.png', game: '', Class: '', role: ''},
+    {id: 'Eliwood', name: 'Eliwood', image: 'Eliwoodp.png', game: 'Blazing Blade', Class: 'Lord', role: 'Protagonist'},
+    {id: 'Old Eliwood', name: 'Old Eliwood', image: 'Eliwoodp6.png', game: 'Binding Blade', Class: 'Cavalier', role: 'NPC', base: 'Eliwood'},
+    {id: 'Hector', name: 'Hector', image: 'Hector.png', game: 'Blazing Blade', Class: 'Knight', role: 'Protagonist'},
+    {id: 'Old Hector', name: 'Old Hector', image: 'Hectorp6.png', game: 'Binding Blade', Class: 'Knight', role: 'NPC', base: 'Hector'},
+    {id: 'Lyn', name: 'Lyn', image: 'Lyn-Portrait-small.png', game: 'Blazing Blade', Class: 'Swordmaster', role: 'Protagonist'},
+    {id: 'Mark', name: 'Mark', image: 'Mark.png', game: 'Blazing Blade', Class: 'Miscellaneous', role: 'NPC'},
+    {id: 'Sain', name: 'Sain', image: 'Sain-Portrait-small.png', game: 'Blazing Blade', Class: 'Cavalier', role: 'Other'},
+	{id: 'Kent', name: 'Kent', image: 'Kent-Portrait-small.png', game: 'Blazing Blade', Class: 'Cavalier', role: 'Other'},
+    {id: 'Florina', name: 'Florina', image: 'Florina-Portrait-small.png', game: 'Blazing Blade', Class: 'Pegasus Knight', role: 'Other'},
+    {id: 'Wil', name: 'Wil', image: 'Wil-Portrait-small.png', game: 'Blazing Blade', Class: 'Archer', role: 'Other'},
+    {id: 'Dorcas', name: 'Dorcas', image: 'Dorcas-Portrait-small.png', game: 'Blazing Blade', Class: 'Fighter', role: 'Other'},
+    {id: 'Serra', name: 'Serra', image: 'Serra-Portrait_copy.png', game: 'Blazing Blade', Class: 'Healer', role: 'Other'},
+    {id: 'Erk', name: 'Erk', image: 'Erk-Portrait_copy.png', game: 'Blazing Blade', Class: 'Mage', role: 'Other'},
+    {id: 'Rath', name: 'Rath', image: 'Rath-Portrait_copy.png', game: 'Blazing Blade', Class: 'Bow Knight', role: 'Other'},
+    {id: 'Matthew', name: 'Matthew', image: 'Matthew-Portrait_copy.png', game: 'Blazing Blade', Class: 'Thief', role: 'Other'},
+    {id: 'Nils', name: 'Nils', image: 'Nils-Portrait_copy.png', game: 'Blazing Blade', Class: 'Dancer', role: 'Other'},
+    {id: 'Lucius', name: 'Lucius', image: 'Lucius-Portrait_copy.png', game: 'Blazing Blade', Class: 'Light Mage', role: 'Other'},
+    {id: 'Wallace', name: 'Wallace', image: 'Wallace-port.png', game: 'Blazing Blade', Class: 'Knight', role: 'Other'},
+    {id: 'Young Marcus', name: 'Marcus', image: 'MarcusFE7.png', game: 'Blazing Blade', Class: 'Cavalier', role: 'Other', base: 'Marcus'},
+    {id: 'Lowen', name: 'Lowen', image: 'Loweningame.png', game: 'Blazing Blade', Class: 'Cavalier', role: 'Other'},
+    {id: 'Rebecca', name: 'Rebecca', image: 'Rebeccaingame.png', game: 'Blazing Blade', Class: 'Archer', role: 'Other'},
+    {id: 'Mustacheless Bartre', name: 'Young Bartre', image: 'Bartre_RnK.png', game: 'Blazing Blade', Class: 'Fighter', role: 'Other', base: 'Bartre'},
+    {id: 'Oswin', name: 'Oswin', image: 'OswinFE7.png', game: 'Blazing Blade', Class: 'Knight', role: 'Other'},
+    {id: 'Guy', name: 'Guy', image: 'GuyFE7.png', game: 'Blazing Blade', Class: 'Swordmaster', role: 'Other'},
+    {id: 'Young Merlinus', name: 'Young Merlinus', image: 'Fire_Emblem_7_Merlinus_Portrait.png', game: 'Blazing Blade', Class: 'Merchant', role: 'Other', base: 'Merlinus'},
+    {id: 'Priscilla', name: 'Priscilla', image: 'Priscillaingame.png', game: 'Blazing Blade', Class: 'Troubadour', role: 'Other'},
+    {id: 'Raven', name: 'Raven', image: 'Raveningame.png', game: 'Blazing Blade', Class: 'Mercenary', role: 'Other'},
+    {id: 'Canas', name: 'Canas', image: 'Fire_Emblem_7_Canas_Portrait.png', game: 'Blazing Blade', Class: 'Dark Mage', role: 'Other'},
+    {id: 'Dart', name: 'Dart', image: 'DartFE7.png', game: 'Blazing Blade', Class: 'Enemy Ax', role: 'Other'},
+    {id: 'Fiora', name: 'Fiora', image: 'Fioraingame.png', game: 'Blazing Blade', Class: 'Pegasus Knight', role: 'Other'},
+    {id: 'Legault', name: 'Legault', image: 'Legaultingame.png', game: 'Blazing Blade', Class: 'Thief', role: 'Other'},
+    {id: 'Ninian', name: 'Ninian', image: 'Ninianingame.png', game: 'Blazing Blade', Class: 'Dancer', role: 'Other'},
+    {id: 'Isadora', name: 'Isadora', image: 'IsadoraFE7.png', game: 'Blazing Blade', Class: 'Cavalier', role: 'Other'},
+    {id: 'Heath', name: 'Heath', image: 'Heathingame.png', game: 'Blazing Blade', Class: 'Wyvern Rider', role: 'Other'},
+    {id: 'Hawkeye', name: '', image: 'HawkeyeFE7.png', game: 'Blazing Blade', Class: 'Enemy Ax', role: 'Other'},
+    {id: 'Geitz', name: 'Geitz', image: 'GeitzFE7.png', game: 'Blazing Blade', Class: 'Fighter', role: 'Other'},
+    {id: 'Pent', name: 'Pent', image: 'PentFE7.png', game: 'Blazing Blade', Class: 'Mage', role: 'Other'},
+    {id: 'Louise', name: 'Louise', image: 'LouiseFE7.png', game: 'Blazing Blade', Class: 'Archer', role: 'Other'},
+    {id: 'Young Karel', name: 'Karel', image: 'Karelp7.png', game: 'Blazing Blade', Class: 'Swordmaster', role: 'Other', base: 'Karel'},
+    {id: 'Harken', name: 'Harken', image: 'Harken-port.png', game: 'Blazing Blade', Class: 'Mercenary', role: 'Other'},
+    {id: 'Nino', name: 'Nino', image: 'Ninoingame.png', game: 'Blazing Blade', Class: 'Mage', role: 'Other'},
+    {id: 'Jaffar', name: 'Jaffar', image: 'Jaffaringame.png', game: 'Blazing Blade', Class: 'Thief', role: 'Other'},
+    {id: 'Vaida', name: 'Vaida', image: 'Fe7_perso_vaida.png', game: 'Blazing Blade', Class: 'Wyvern Rider', role: 'Other'},
+    {id: 'Renault', name: 'Renault', image: 'RenaultFE7.png', game: 'Blazing Blade', Class: 'Healer', role: 'Other'},
+    {id: 'Athos', name: 'Athos', image: 'AthosFE7.png', game: 'Blazing Blade', Class: 'Mage', role: 'Other'},
+    {id: 'Farina', name: 'Farina', image: 'Farinaingame.png', game: 'Blazing Blade', Class: 'Pegasus Knight', role: 'Other'},
+    {id: 'Karla', name: 'Karla', image: 'Karla-1FE7.png', game: 'Blazing Blade', Class: 'Swordmaster', role: 'Other'},
+    {id: 'Eleanora', name: 'Eleanora', image: 'Eleanora.png', game: 'Blazing Blade', Class: 'Healer', role: 'NPC'},
+    {id: 'Fargus', name: 'Fargus', image: 'Fargus-port.png', game: 'Blazing Blade', Class: 'Enemy Ax', role: 'NPC'},
+    {id: 'Leila', name: 'Leila', image: 'LeilaFE7.png', game: 'Blazing Blade', Class: 'Thief', role: 'NPC'},
+    {id: 'Elbert', name: 'Elbert', image: 'Elbert.png', game: 'Blazing Blade', Class: 'Miscellaneous', role: 'NPC'},
+    {id: 'Uther', name: 'Uther', image: 'Uther.png', game: 'Blazing Blade', Class: 'Knight', role: 'NPC'},
+    {id: 'Young Zephiel', name: 'Young Zephiel', image: 'Zephiel_FE7.png', game: 'Blazing Blade', Class: 'Miscellaneous', role: 'NPC', base: 'Zephiel'},
+    {id: 'Bramimond', name: 'Bramimond', image: 'Bramimond.png', game: 'Blazing Blade', Class: 'Dark Mage', role: 'NPC'},
+    {id: 'Hellene', name: 'Hellene', image: 'Hellene.png', game: 'Blazing Blade', Class: 'Miscellaneous', role: 'NPC'},
+    {id: '7 Murdock', name: 'Murdock', image: 'MurdockFE7.png', game: 'Blazing Blade', Class: 'Knight', role: 'NPC', base: 'Murdock'},
+    {id: 'Desmond', name: 'Desmond', image: 'Desmond.png', game: 'Blazing Blade', Class: 'Miscellaneous', role: 'Antagonist'},
+    {id: 'Young Guinevere', name: 'Young Guinevere', image: 'Guinevere_Child.png', game: 'Blazing Blade', Class: 'Miscellaneous', role: 'NPC', base: 'Guinevere'},
+    {id: 'Roland', name: 'Roland', image: 'Roland.png', game: 'Blazing Blade', Class: 'Mercenary', role: 'NPC'},
+    {id: 'Durban', name: 'Durban', image: 'Durban.png', game: 'Blazing Blade', Class: 'Enemy Ax', role: 'NPC'},
+    {id: 'Sonia', name: 'Sonia', image: 'Soniaingame.png', game: 'Blazing Blade', Class: 'Mage', role: 'Antagonist'},
+    {id: 'Limstella', name: 'Limstella', image: 'Limstellaingame.png', game: 'Blazing Blade', Class: 'Mage', role: 'Antagonist'},
+    {id: 'Ephidel', name: 'Ephidel', image: 'FE7Ephidel.png', game: 'Blazing Blade', Class: 'Mage', role: 'Antagonist'},
+    {id: 'Nergal', name: 'Nergal', image: 'NergalFE7.png', game: 'Blazing Blade', Class: 'Dark Mage', role: 'Antagonist'},
+    {id: 'Kishuna', name: 'Kishuna', image: 'Kishuna.png', game: 'Blazing Blade', Class: 'Miscellaneous', role: 'Antagonist'},
+    {id: 'Uhai', name: 'Uhai', image: 'Uhai.png', game: 'Blazing Blade', Class: 'Bow Knight', role: 'Antagonist'},
+    {id: 'Jerme', name: 'Jerme', image: 'Jerme.png', game: 'Blazing Blade', Class: 'Swordmaster', role: 'Antagonist'},
+    {id: 'Kenneth', name: 'Kenneth', image: 'Kenneth.png', game: 'Blazing Blade', Class: 'Light Mage', role: 'Antagonist'},
+    {id: 'Darin', name: 'Darin', image: 'Darin.png', game: 'Blazing Blade', Class: 'Knight', role: 'Antagonist'},
+    {id: 'Lloyd', name: 'Lloyd', image: 'Lloyd.png', game: 'Blazing Blade', Class: 'Swordmaster', role: 'Antagonist'},
+    {id: 'Linus', name: 'Linus', image: 'Games_felinus2.png', game: 'Blazing Blade', Class: 'Mercenary', role: 'Antagonist'},
+    {id: 'Ursula', name: 'Ursula', image: 'UrsulaFE7.png', game: 'Blazing Blade', Class: 'Mage Knight', role: 'Antagonist'},
+    {id: 'Brendan', name: 'Brendan', image: 'Brendan.png', game: 'Blazing Blade', Class: 'Fighter', role: 'NPC'},
+    
+    //Sacred Stones
+    //{id: '', name: '', image: '.png', game: '', Class: '', role: ''},
+    {id: 'Eirika', name: 'Eirika', image: 'FETSS_Eirika_Portrait.png', game: 'Sacred Stones', Class: 'Lord', role: 'Protagonist'},
+    {id: 'Ephraim', name: 'Ephraim', image: 'Ephraimingame.png', game: 'Sacred Stones', Class: 'Lord', role: 'Protagonist'},
+    {id: 'Seth', name: 'Seth', image: 'Seth_Face_Sprite.png', game: 'Sacred Stones', Class: 'Cavalier', role: 'Other'},
+    {id: 'Franz', name: 'Franz', image: 'FE8_Franz.png', game: 'Sacred Stones', Class: 'Cavalier', role: 'Other'},
+    {id: 'Gilliam', name: 'Gilliam', image: 'FE8_Gilliam.png', game: 'Sacred Stones', Class: 'Knight', role: 'Other'},
+    {id: 'Vanessa', name: 'Vanessa', image: 'FE8_Vanessa.png', game: 'Sacred Stones', Class: 'Pegasus Knight', role: 'Other'},
+    {id: 'Moulder', name: 'Moulder', image: 'FE8_Moulder.png', game: 'Sacred Stones', Class: 'Healer', role: 'Other'},
+    {id: 'Ross', name: 'Ross', image: 'FE8_Ross.png', game: 'Sacred Stones', Class: 'Villager', role: 'Other'},
+    {id: 'Garcia', name: 'Garcia', image: 'FE8_Garcia.png', game: 'Sacred Stones', Class: 'Fighter', role: 'Other'},
+    {id: 'Artur', name: 'Artur', image: 'Portrait_artur_fe08.png', game: 'Sacred Stones', Class: 'Light Mage', role: 'Other'},
+    {id: 'Lute', name: 'Lute', image: 'Luteingame.png', game: 'Sacred Stones', Class: 'Mage', role: 'Other'},
+    {id: 'Natasha', name: 'Natasha', image: 'Natasha.png', game: 'Sacred Stones', Class: 'Healer', role: 'Other'},
+    {id: 'Joshua', name: 'Joshua', image: 'Joshua.png', game: 'Sacred Stones', Class: 'Swordmaster', role: 'Other'},
+    {id: 'Forde', name: 'Forde', image: 'Forde.png', game: 'Sacred Stones', Class: 'Cavalier', role: 'Other'},
+    {id: 'Kyle', name: 'Kyle', image: 'Kyle.png', game: 'Sacred Stons', Class: 'Cavalier', role: 'Other'},
+    {id: 'Orson', name: 'Orson', image: 'OlsonFE8.png', game: 'Sacred Stones', Class: 'Cavalier', role: 'Antagonist'},
+    {id: 'Tana', name: 'Tana', image: 'Tana.png', game: 'Sacred Stones', Class: 'Cavalier', role: 'Other'},
+    {id: 'Amelia', name: 'Amelia', image: 'Amelia.png', game: 'Sacred Stones', Class: 'Villager', role: 'Other'},
+    {id: 'Innes', name: 'Innes', image: 'Innesingame.png', game: 'Sacred Stones', Class: 'Archer', role: 'Other'},
+    {id: 'Gerik', name: 'Gerik', image: 'Gerikingame.png', game: 'Sacred Stones', Class: 'Mercenary', role: 'Other'},
+    {id: 'Tethys', name: 'Tethys', image: 'FE8_Tethys.png', game: 'Sacred Stones', Class: 'Dancer', role: 'Other'},
+    {id: 'Marisa', name: 'Marisa', image: 'Marisa.png', game: 'Sacred Stones', Class: 'Swordmaster', role: 'Other'},
+    {id: "L'Arachel", name: "L'Arachel", image: 'LArachelingame.png', game: 'Sacred Stones', Class: 'Troubadour', role: 'Other'},
+    {id: 'Dozla', name: 'Dozla', image: 'Dozla.png', game: 'Sacred Stones', Class: 'Enemy Ax', role: 'Other'},
+    {id: 'Saleh', name: 'Saleh', image: 'Saleh-FE8.png', game: 'Sacred Stones', Class: 'Mage', role: 'Other'},
+    {id: 'Ewan', name: 'Ewan', image: 'Ewan.png', game: 'Sacred Stones', Class: 'Villager', role: 'Other'},
+    {id: 'Cormag', name: 'Cormag', image: 'Cormag.png', game: 'Sacred Stones', Class: 'Wyvern Rider', role: 'Other'},
+    {id: 'Rennac', name: 'Rennac', image: 'Rennac.png', game: 'Sacred Stones', Class: 'Thief', role: 'Other'},
+    {id: 'Duessel', name: 'Duessel', image: 'FE8_Duessel.png', game: 'Sacred Stones', Class: 'Cavalier', role: 'Other'},
+    {id: 'Knoll', name: 'Knoll', image: 'FE8_Knoll.png', game: 'Sacred Stones', Class: 'Dark Mage', role: 'Other'},
+    {id: 'Myrrh', name: 'Myrrh', image: 'Myrrhingame.png', game: 'Sacred Stones', Class: 'Dragon', role: 'Other'},
+    {id: 'Syrene', name: 'Syrene', image: 'Syrene.png', game: 'Sacred Stones', Class: 'Pegasus Knight', role: 'Other'},
+    {id: 'Caellach', name: 'Caellach', image: 'KeseldaFE8.png', game: 'Sacred Stones', Class: 'Mercenary', role: 'Antagonist'},
+    {id: 'Riev', name: 'Riev', image: 'Riev_portrait.png', game: 'Sacred Stones', Class: 'Light Mage', role: 'Antagonist'},
+    {id: 'Ismaire', name: 'Ismaire', image: 'Ismaire.png', game: 'Sacred Stones', Class: 'Swordmaster', role: 'NPC'},
+    {id: 'Selena(Sacred Stones)', name: 'Selena', image: 'Selena.png', game: 'Sacred Stones', Class: 'Mage Knight', role: 'Antagonist'},
+    {id: 'Glen', name: 'Glen', image: 'GlenFE8.png', game: 'Sacred Stones', Class: 'Wyvern Rider', role: 'NPC'},
+    {id: 'Hayden', name: 'Hayden', image: 'Hayden.png', game: 'Sacred Stones', Class: 'Bow Knight', role: 'NPC'},
+    {id: 'Valter', name: 'Valter', image: 'ValterFE8.png', game: 'Sacred Stones', Class: 'Wyvern Rider', role: 'Antagonist'},
+    {id: 'Fado', name: 'Fado', image: 'Fado.png', game: 'Sacred Stones', Class: 'Knight', role: 'NPC'},
+    {id: 'Lyon', name: 'Lyon', image: 'Lyonp.png', game: 'Sacred Stones', Class: 'Dark Mage', role: 'Antagonist'},
+    {id: 'Klimt', name: 'Klimt', image: 'Klimt.png', game: 'Sacred Stones', Class: 'Healer', role: 'NPC'},
+    {id: 'Dara', name: 'Dara', image: 'Dara.png', game: 'Sacred Stones', Class: 'Dark Mage', role: 'NPC'},
+    {id: 'Mansel', name: 'Mansel', image: 'Mansel.png', game: 'Sacred Stones', Class: 'Miscellaneous', role: 'NPC'},
+    {id: 'Morva', name: 'Morva', image: 'Morva.png', game: 'Sacred Stones', Class: 'Dragon', role: 'NPC'},
+    {id: 'Fomortiis', name: 'Fomortiis', image: 'FomotiisStatScreenPortrait.png', game: 'Sacred Stones', Class: 'Goddess', role: 'Antagonist'},
+    {id: 'Vigarde', name: 'Vigarde', image: 'Vigarde.png', game: 'Sacred Stones', Class: 'Knight', role: 'Antagonist'},
+    
+    //Path of Radiance/Radiant Dawn
+    //{id: '', name: '', image: '.png', game: '', Class: '', role: ''},
+    {id: 'Ike', name: 'Ike', image: 'IkeFE10Portrait_Hero.png', game: 'Tellius', Class: 'Mercenary', role: 'Protagonist'},
+    {id: 'Micaiah', name: 'Micaiah', image: 'Micaiahbody.png', game: 'Tellius', Class: 'Light Mage', role: 'Protagonist'},
+    {id: 'Elincia', name: 'Elincia', image: 'ElinciaFE10Portrait.png', game: 'Tellius', Class: 'Pegasus Knight', role: 'Protagonist'},
+    //Characters that don't cleanly fit into Radiant Dawn
+    {id: 'Sothe', name: 'Sothe', image: 'Sothe_as_a_rouge_RD.png', game: 'Tellius', Class: 'Thief', role: 'Other'},
+    {id: 'Young Sothe', name: 'Sothe', image: 'Sotheingame.png', game: 'Tellius', Class: 'Thief', role: 'Other', base: 'Sothe'},
+    {id: 'Devdan', name: 'Devdan', image: 'DevdanPortrait.png', game: 'Tellius', Class: 'Soldier', role: 'Other'},
+    {id: 'Danved', name: 'Danved', image: 'Danvedportrait.png', game: 'Tellius', Class: 'Soldier', role: 'Other', base: 'Devdan'},
+    {id: 'Largo', name: 'Largo', image: 'LargoFE9Portrait.png', game: 'Tellius', Class: 'Enemy Ax', role: 'Other'},
+    {id: 'Shiharam', name: 'Shiharam', image: 'Shiharam.png', game: 'Tellius', Class: 'Wyvern Rider', role: 'Antagonist'},
+    {id: 'Petrine', name: 'Petrine', image: 'Petrineporfull.png', game: 'Tellius', Class: 'Cavalier', role: 'Antagonist'},
+    {id: 'Bryce', name: 'Bryce', image: 'Bryce.png', game: 'Tellius', Class: 'Knight', role: 'Antagonist'},
+    {id: 'Ashnard', name: 'Ashnard', image: 'FE9_Ashnard_Portrait_1.png', game: 'Tellius', Class: 'Wyvern Rider', role: 'Antagonist'},
+    {id: 'Greil', name: 'Greil', image: 'Greil.png', game: 'Tellius', Class: 'Mercenary', role: 'NPC'},
+    {id: 'Lotz', name: 'Lotz', image: 'Lotz.PNG.png', game: 'Tellius', Class: 'Beast', role: 'NPC'},
+    {id: 'Rajaion', name: 'Rajaion', image: 'PoRRajaion.png', game: 'Tellius', Class: 'Dragon', role: 'Antagonist'},
+    {id: 'Renning', name: 'Renning', image: 'Renning_FE10.png', game: 'Tellius', Class: 'Cavalier', role: 'Other'},
+    {id: 'Bertram', name: 'Bertram', image: 'FE9_Bertram_Portrait.png', game: 'Tellius', Class: 'Cavalier', role: 'Antagonist', base: 'Renning'},
+    {id: 'Elena', name: 'Elena', image: 'Elena_portrait.png', game: 'Tellius', Class: 'Healer', role: 'NPC'},
+    //Everyone else in Radiant Dawn
+    {id: 'Edward', name: 'Edward', image: 'Edward.png', game: 'Tellius', Class: 'Swordmaster', role: 'Other'},
+    {id: 'Leonardo', name: 'Leonardo', image: 'Leonardo.png', game: 'Tellius', Class: 'Archer', role: 'Other'},
+    {id: 'Nolan', name: 'Nolan', image: 'Nolan.png', game: 'Tellius', Class: 'Fighter', role: 'Other'},
+    {id: 'Laura', name: 'Laura', image: 'Laura.png', game: 'Tellius', Class: 'Healer', role: 'Other'},
+    {id: 'Ilyana', name: 'Ilyana', image: 'Ilyana2.png', game: 'Tellius', Class: 'Mage', role: 'Other'},
+    {id: 'Aran', name: 'Aran', image: 'Aran.png', game: 'Tellius', Class: 'Soldier', role: 'Other'},
+    {id: 'Meg', name: 'Meg', image: 'Meg_portrait.png', game: 'Tellius', Class: 'Knight', role: 'Other'},
+    {id: 'Volug', name: 'Volug', image: 'Volug.png', game: 'Tellius', Class: 'Beast', role: 'Other'},
+    {id: 'Zihark', name: 'Zihark', image: 'Zihark_portrait.png', game: 'Tellius', Class: 'Swordmaster', role: 'Other'},
+    {id: 'Tauroneo', name: 'Tauroneo', image: 'Tauroneo_RD.png', game: 'Tellius', Class: 'Knight', role: 'Other'},
+    {id: 'Jill', name: 'Jill', image: 'Jill.png', game: 'Tellius', Class: 'Wyvern Rider', role: 'Other'},
+    {id: 'Fiona', name: 'Fiona', image: 'Fiona2.png', game: 'Tellius', Class: 'Cavalier', role: 'Other'},
+    {id: 'Tormod', name: 'Tormod', image: 'Tormod.png', game: 'Tellius', Class: 'Mage', role: 'Other'},
+    {id: 'Muarim', name: 'Muarim', image: 'Muarim_portrait.png', game: 'Tellius', Class: 'Beast', role: 'Other'},
+    {id: 'Vika', name: 'Vika', image: 'Vika.png', game: 'Tellius', Class: 'Beast', role: 'Other'},
+    {id: 'Nailah', name: 'Nailah', image: 'Nailah.png', game: 'Tellius', Class: 'Beast', role: 'Other'},
+    {id: 'Rafiel', name: 'Rafiel', image: 'Rafiel.png', game: 'Tellius', Class: 'Dancer', role: 'Other'},
+    {id: 'Black Knight', name: 'Black Knight', image: 'BlackknightFE10Portrait.png', game: 'Tellius', Class: 'Knight', role: 'Antagonist'},
+    {id: 'Zelgius', name: 'Zelgius', image: 'ZelgiusFE10Portrait.png', game: 'Tellius', Class: 'Knight', role: 'NPC', base: 'Black Knight'},
+    {id: 'Marcia', name: 'Marcia', image: 'MarciaFE10Portrait.png', game: 'Tellius', Class: 'Pegasus Knight', role: 'Other'},
+    {id: 'Leanne', name: 'Leanne', image: 'Leanne.png', game: 'Tellius', Class: 'Dancer', role: 'Other'},
+    {id: 'Nealuchi', name: 'Nealuchi', image: 'Nealuchi_FE10.png', game: 'Tellius', Class: 'Beast', role: 'Other'},
+    {id: 'Haar', name: 'Haar', image: 'Haar_RD.png', game: 'Tellius', Class: 'Wyvern Rider', role: 'Other'},
+    {id: 'Nephenee', name: 'Nephenee', image: 'Nephenie.png', game: 'Tellius', Class: 'Soldier', role: 'Other'},
+    {id: 'Brom', name: 'Brom', image: 'Brom.png', game: 'Tellius', Class: 'Knight', role: 'Other'},
+    {id: 'Heather', name: 'Heather', image: 'Heather.png', game: 'Tellius', Class: 'Thief', role: 'Other'},
+    {id: 'Lucia', name: 'Lucia', image: 'LuciaFE10Portrait_Longhair.png', game: 'Tellius', Class: 'Swordmaster', role: 'Other'},
+    {id: 'Modecai', name: 'Modecai', image: 'Modecai.png', game: 'Tellius', Class: 'Beast', role: 'Other'},
+    {id: 'Lethe', name: 'Lethe', image: 'FE10LetheBody.png', game: 'Tellius', Class: 'Beast', role: 'Other'},
+    {id: 'Geoffrey', name: 'Geoffrey', image: 'GeoffreyFE10Portrait.png', game: 'Tellius', Class: 'Cavalier', role: 'Other'},
+    {id: 'Kieran', name: 'Kieran', image: 'Kieran_FE10.png', game: 'Tellius', Class: 'Cavalier', role: 'Other'},
+    {id: 'Makalov', name: 'Makalov', image: 'Makalov_FE10.png', game: 'Tellius', Class: 'Cavalier', role: 'Other'},
+    {id: 'Astrid', name: 'Astrid', image: 'Astrid.png', game: 'Tellius', Class: 'Bow Knight', role: 'Other'},
+    {id: 'Calill', name: 'Calill', image: 'Calill.png', game: 'Tellius', Class: 'Mage', role: 'Other'},
+    {id: 'Titania', name: 'Titania', image: 'Titania2.png', game: 'Tellius', Class: 'Cavalier', role: 'Other'},
+    {id: 'Oscar', name: 'Oscar', image: 'Oscar.png', game: 'Tellius', Class: 'Cavalier', role: 'Other'},
+    {id: 'Boyd', name: 'Boyd', image: 'Boyd_rd.png', game: 'Tellius', Class: 'Fighter', role: 'Other'},
+    {id: 'Rolf', name: 'Rolf', image: 'Rolf2.png', game: 'Tellius', Class: 'Archer', role: 'Other'},
+    {id: 'Shinon', name: 'Shinon', image: 'Shinon_FE10.png', game: 'Tellius', Class: 'Archer', role: 'Other'},
+    {id: 'Soren', name: 'Soren', image: 'SorenRD.png', game: 'Tellius', Class: 'Mage', role: 'Other'},
+    {id: 'Mist', name: 'Mist', image: 'Mist.png', game: 'Tellius', Class: 'Healer', role: 'Other'},
+    {id: 'Gatrie', name: 'Gatrie', image: 'Gatrie_RD.png', game: 'Tellius', Class: 'Knight', role: 'Other'},
+    {id: 'Rhys', name: 'Rhys', image: 'Rhys_FE10.png', game: 'Tellius', Class: 'Healer', role: 'Other'},
+    {id: 'Mia', name: 'Mia', image: 'MiaFE10Portrait.png', game: 'Tellius', Class: 'Swordmaster', role: 'Other'},
+    {id: 'Ranulf', name: 'Ranulf', image: 'Ranulf.png', game: 'Tellius', Class: 'Beast', role: 'Other'},
+    {id: 'Kyza', name: 'Kyza', image: 'Kyza2.png', game: 'Tellius', Class: 'Beast', role: 'Other'},
+    {id: 'Lyre', name: 'Lyre', image: 'Lyre2.png', game: 'Tellius', Class: 'Beast', role: 'Other'},
+    {id: 'Reyson', name: 'Reyson', image: 'Reyson.png', game: 'Tellius', Class: 'Dancer', role: 'Other'},
+    {id: 'Janaff', name: 'Janaff', image: 'Janaff_RD.png', game: 'Tellius', Class: 'Beast', role: 'Other'},
+    {id: 'Ulki', name: 'Ulki', image: 'Ulki3.png', game: 'Tellius', Class: 'Beast', role: 'Other'},
+    {id: 'Sigrun', name: 'Sigrun', image: 'Sigrun2.png', game: 'Tellius', Class: 'Pegasus Knight', role: 'Other'},
+    {id: 'Tanith', name: 'Tanith', image: 'Tanith_FE10.png', game: 'Tellius', Class: 'Pegasus Knight', role: 'Other'},
+    {id: 'Naesala', name: 'Naesala', image: 'NaesalaRD.png', game: 'Tellius', Class: 'Beast', role: 'Other'},
+    {id: 'Skrimir', name: 'Skrimir', image: 'Skrimir2.png', game: 'Tellius', Class: 'Beast', role: 'Other'},
+    {id: 'Sanaki', name: 'Sanaki', image: 'Sanaki.png', game: 'Tellius', Class: 'Mage', role: 'Other'},
+    {id: 'Tibarn', name: 'Tibarn', image: 'TibarnRD.png', game: 'Tellius', Class: 'Beast', role: 'Other'},
+    {id: 'Pelleas', name: 'Pelleas', image: 'Pelleas.png', game: 'Tellius', Class: 'Dark Mage', role: 'Other'},
+    {id: 'Stefan', name: 'Stefan', image: 'Stefan.png', game: 'Tellius', Class: 'Swordmaster', role: 'Other'},
+    {id: 'Oliver', name: 'Oliver', image: 'OliverFE10Portrait.png', game: 'Tellius', Class: 'Light Mage', role: 'Antagonist'},
+    {id: 'Bastian', name: 'Bastian', image: 'BastianFE10Portrait.png', game: 'Tellius', Class: 'Mage', role: 'Other'},
+    {id: 'Volke', name: 'Volke', image: 'Volke.png', game: 'Tellius', Class: 'Thief', role: 'Other'},
+    {id: 'Caineghis', name: 'Caineghis', image: 'Caineghis.png', game: 'Tellius', Class: 'Beast', role: 'Other'},
+    {id: 'Giffca', name: 'Giffca', image: 'Giffca3.png', game: 'Tellius', Class: 'Beast', role: 'Other'},
+    {id: 'Ena', name: 'Ena', image: 'Ena_FE10.png', game: 'Tellius', Class: 'Dragon', role: 'Other'},
+    {id: 'Kurthnaga', name: 'Kurthnaga', image: 'Kurthnaga.png', game: 'Tellius', Class: 'Dragon', role: 'Other'},
+    {id: 'Nasir', name: 'Nasir', image: 'Nasir_FE10.png', game: 'Tellius', Class: 'Dragon', role: 'Other'},
+    {id: 'Gareth', name: 'Gareth', image: 'Gareth.png', game: 'Tellius', Class: 'Dragon', role: 'Other'},
+    {id: 'Sephiran', name: 'Sephiran', image: 'Sephiran.png', game: 'Tellius', Class: 'Healer', role: 'Antagonist'},
+    {id: 'Lehran', name: 'Lehran', image: 'Lehransprite.png', game: 'Tellius', Class: 'Healer', role: 'Other', base: 'Sephiran'},
+    {id: 'Yune', name: 'Yune', image: 'Yune.png', game: 'Tellius', Class: 'Goddess', role: 'NPC'},
+    {id: 'Ashunera', name: 'Ashunera', image: 'Ashunera.png', game: 'Tellius', Class: 'Goddess', role: 'NPC'},
+    {id: 'Almedha', name: 'Almedha', image: 'Almedha_sprite.png', game: 'Tellius', Class: 'Dragon', role: 'NPC'},
+    {id: 'Aimee', name: 'Aimee', image: 'AimeeFE10.png', game: 'Tellius', Class: 'Merchant', role: 'NPC'},
+    {id: 'Muston', name: 'Muston', image: 'Muston_shop.png', game: 'Tellius', Class: 'Merchant', role: 'NPC'},
+    {id: 'Jorge', name: 'Jorge', image: 'Jorge_in_shop.png', game: 'Tellius', Class: 'Merchant', role: 'NPC'},
+    {id: 'Daniel', name: 'Daniel', image: 'Danielshop.png', game: 'Tellius', Class: 'Merchant', role: 'NPC'},
+    {id: 'Nico', name: 'Nico', image: 'Nico.png', game: 'Tellius', Class: 'Miscellaneous', role: 'NPC'},
+    {id: 'Amy', name: 'Amy', image: 'Amy.png', game: 'Tellius', Class: 'Miscellaneous', role: 'NPC'},
+    {id: 'Lekain', name: 'Lekain', image: 'FE10_Lekain.png', game: 'Tellius', Class: 'Light Mage', role: 'NPC'},
+    {id: 'Dheginsea', name: 'Dheginsea', image: 'Dheginsea_FE10.png', game: 'Tellius', Class: 'Dragon', role: 'Antagonist'},
+    {id: 'Ashera', name: 'Ashera', image: 'Ashera.png', game: 'Tellius', Class: 'Goddess', role: 'Antagonist'},
+    {id: 'Jarod', name: 'Jarod', image: 'Jarod.png', game: 'Tellius', Class: 'Soldier', role: 'Antagonist'},
+    {id: 'Ludveck', name: 'Ludveck', image: 'Ludveck.png', game: 'Tellius', Class: 'Knight', role: 'Antagonist'},
+    {id: 'Valtome', name: 'Valtome', image: 'Valtome.png', game: 'Tellius', Class: 'Light Mage', role: 'Antagonist'},
+    {id: 'Numida', name: 'Numida', image: 'Numida2.PNG.png', game: 'Tellius', Class: 'Light Mage', role: 'Antagonist'},
+    {id: 'Izuka', name: 'Izuka', image: 'Izuka_RD.png', game: 'Tellius', Class: 'Dark Mage', role: 'Antagonist'},
+    {id: 'Hetzel', name: 'Hetzel', image: 'Hetzel2.PNG.png', game: 'Tellius', Class: 'Healer', role: 'Antagonist'},
+    {id: 'Levail', name: 'Levail', image: 'Levail.png', game: 'Tellius', Class: 'Soldier', role: 'Antagonist'},
+    
+    //Awakening
+	//{id: '', name: '', image: '.png', game: '', Class: '', role: ''},
+    {id: 'Robin', name: 'Robin', image: 'Robin_Avatar_M_F.png', game: 'Awakening', Class: 'Mage', role: 'Protagonist'},
+    {id: 'Chrom', name: 'Chrom', image: 'Chromfacingleft.png', game: 'Awakening', Class: 'Lord', role: 'Protagonist'},
+    {id: 'Lissa', name: 'Lissa', image: 'Liz_Portrait.png', game: 'Awakening', Class: 'Healer', role: 'Other'},
+    {id: 'Frederick', name: 'Frederick', image: 'Frederik_Portrait.png', game: 'Awakening', Class: 'Cavalier', role: 'Other'},
+    {id: 'Sully', name: 'Sully', image: 'Soiree.png', game: 'Awakening', Class: 'Cavalier', role: 'Other'},
+    {id: 'Virion', name: 'Virion', image: 'Viole.png', game: 'Awakening', Class: 'Archer', role: 'Other'},
+    {id: 'Stahl', name: 'Stahl', image: 'SolKakusei.png', game: 'Awakening', Class: 'Cavalier', role: 'Other'},
+    {id: 'Vaike', name: 'Vaike', image: 'Vake.png', game: 'Awakening', Class: 'Fighter', role: 'Other'},
+    {id: 'Miriel', name: 'Miriel', image: 'Miriel.png', game: 'Awakening', Class: 'Mage', role: 'Other'},
+    {id: 'Sumia', name: 'Sumia', image: 'Sumia.png', game: 'Awakening', Class: 'Pegasus Knight', role: 'Other'},
+    {id: 'Kellam', name: 'Kellam', image: 'Cullum.png', game: 'Awakening', Class: 'Knight', role: 'Other'},
+	{id: 'Donnel', name: 'Donnel', image: 'DonnyPortrait.png', game: 'Awakening', Class: 'Villager', role: 'Other'},
+	{id: "Lon'qu", name: "Lon'qu", image: 'Ronku.png', game: 'Awakening', Class: 'Swordmaster', role: 'Other'},
+	{id: 'Ricken', name: 'Ricken', image: 'Richt.png', game: 'Awakening', Class: 'Mage', role: 'Other'},
+	{id: 'Maribelle', name: 'Maribelle', image: 'Mariabel.png', game: 'Awakening', Class: 'Troubadour', role: 'Other'},
+	{id: 'Panne', name: 'Panne', image: 'Velvet_Portrait.png', game: 'Awakening', Class: 'Beast', role: 'Other'},
+	{id: 'Gaius', name: 'Gaius', image: 'Gaia.png', game: 'Awakening', Class: 'Thief', role: 'Other'},
+	{id: 'Cordelia', name: 'Cordelia', image: 'Tiamo_Portrait.png', game: 'Awakening', Class: 'Pegasus Knight', role: 'Other'},
+	{id: 'Gregor', name: 'Gregor', image: 'Grego_Portrait.png', game: 'Awakening', Class: 'Mercenary', role: 'Other'},
+	{id: 'Nowi', name: 'Nowi', image: 'Nono_Kakusei.png', game: 'Awakening', Class: 'Dragon', role: 'Other'},
+	{id: 'Libra', name: 'Libra', image: 'Libera.png', game: 'Awakening', Class: 'Healer', role: 'Other'},
+	{id: 'Tharja', name: 'Tharja', image: 'Sariya_Kakusei.png', game: 'Awakening', Class: 'Dark Mage', role: 'Other'},
+	{id: 'Awakening Anna', name: 'Awakening Anna', image: 'Anna13Portrait.png', game: 'Awakening', Class: 'Thief', role: 'Other'},
+	{id: 'Olivia', name: 'Olivia', image: 'Olivia_Kakusei.png', game: 'Awakening', Class: 'Dancer', role: 'Other'},
+	{id: 'Cherche', name: 'Cherche', image: 'Serge_Kakusei.png', game: 'Awakening', Class: 'Wyvern Rider', role: 'Other'},
+	{id: 'Henry', name: 'Henry', image: 'Henry.png', game: 'Awakening', Class: 'Dark Mage', role: 'Other'},
+	{id: "Say'ri", name: "Say'ri", image: 'Sayriportrait.png', game: 'Awakening', Class: 'Swordmaster', role: 'Other'},
+	{id: 'Adult Tiki', name: 'Adult Tiki', image: 'Tikiportrait.png', game: 'Awakening', Class: 'Dragon', role: 'Other', base: 'Tiki'},
+	{id: 'Basilio', name: 'Basilio', image: 'BasilioPortrait.png', game: 'Awakening', Class: 'Fighter', role: 'Other'},
+	{id: 'Flavia', name: 'Flavia', image: 'Flavia.png', game: 'Awakening', Class: 'Mercenary', role: 'Other'},
+	{id: 'Lucina', name: 'Lucina', image: 'Lucina_portrait_normal.png', game: 'Awakening', Class: 'Lord', role: 'Protagonist'},
+	{id: 'Morgan', name: 'Morgan', image: 'Morgans.png', game: 'Awakening', Class: 'Mage', role: 'Other'},
+	{id: 'Owain', name: 'Owain', image: 'Owain.png', game: 'Awakening', Class: 'Swordmaster', role: 'Other'},
+	{id: 'Kjelle', name: 'Kjelle', image: 'Dezel.png', game: 'Awakening', Class: 'Knight', role: 'Other'},
+	{id: 'Laurent', name: 'Laurent', image: 'FE13_Laurent.png', game: 'Awakening', Class: 'Mage', role: 'Other'},
+    {id: 'Cynthia', name: 'Cynthia', image: 'Cynthia_Kakusei.png', game: 'Awakening', Class: 'Pegasus Knight', role: 'Other'},
+    {id: 'Brady', name: 'Brady', image: 'Brady.png', game: 'Awakening', Class: 'Healer', role: 'Other'},
+    {id: 'Yarne', name: 'Yarne', image: 'Yarne.png', game: 'Awakening', Class: 'Beast', role: 'Other'},
+    {id: 'Severa', name: 'Severa', image: 'Severa.png', game: 'Awakening', Class: 'Mercenary', role: 'Other'},
+    {id: 'Noire', name: 'Noire', image: 'Noire.png', game: 'Awakening', Class: 'Archer', role: 'Other'},
+    {id: 'Nah', name: 'Nah', image: 'Nah.png', game: 'Awakening', Class: 'Dragon', role: 'Other'},
+    {id: 'Inigo', name: 'Inigo', image: 'Azure.png', game: 'Awakening', Class: 'Mercenary', role: 'Other'},
+    {id: 'Gerome', name: 'Gerome', image: 'Gerome.png', game: 'Awakening', Class: 'Wyvern Rider', role: 'Other'},
+    {id: 'Gangrel', name: 'Gangrel', image: 'Gangrel_Portrait.png', game: 'Awakening', Class: 'Thief', role: 'Antagonist'},
+    {id: 'Walhart', name: 'Walhart', image: 'Walhart_portrait.png', game: 'Awakening', Class: 'Cavalier', role: 'Antagonist'},
+    {id: 'Emmeryn', name: 'Emmeryn', image: 'Emerina_Portrait.png', game: 'Awakening', Class: 'Healer', role: 'Other'},
+    {id: "Yen'fey", name: "Yen'fey", image: 'Renha.png', game: 'Awakening', Class: 'Swordmaster', role: 'Antagonist'},
+    {id: 'Aversa', name: 'Aversa', image: 'Inverse_Portrait.png', game: 'Awakening', Class: 'Pegasus Knight', role: 'Antagonist'},
+    {id: 'Priam', name: 'Priam', image: 'Priam.png', game: 'Awakening', Class: 'Mercenary', role: 'Other'},
+    {id: 'Phila', name: 'Phila', image: 'Philein.png', game: 'Awakening', Class: 'Pegasus Knight', role: 'NPC'},
+    {id: 'Naga', name: 'Naga', image: 'Naga.png', game: 'Awakening', Class: 'Dragon', role: 'Other'},
+    {id: 'Validar', name: 'Validar', image: 'Validar_Portrait.png', game: 'Awakening', Class: 'Dark Mage', role: 'Antagonist'},
+    {id: 'Grima', name: 'Grima', image: 'PlegiaTact.png', game: 'Awakening', Class: 'Dragon', role: 'Antagonist'},
+    {id: 'The Creation', name: 'Grima', image: 'Grima_Echoes.png', game: 'Shadows of Valencia', Class: 'Dragon', role: 'Antagonist', base: 'Grima'},
+    {id: 'Raimi', name: 'Raimi', image: 'Raimi_Kakusei.PNG.png', game: 'Awakening', Class: 'Knight', role: 'NPC'},
+    {id: 'Cervantes', name: 'Cervantes', image: 'Cervantes.png', game: 'Awakening', Class: 'Knight', role: 'Antagonist'},
+    {id: 'Excellus', name: 'Excellus', image: 'Exceli.png', game: 'Awakening', Class: 'Mage', role: 'Antagonist'},
+    {id: 'Mustafa', name: 'Mustafa', image: 'Mustafaportrait.png', game: 'Awakening', Class: 'Fighter', role: 'Antagonist'},
+    {id: 'Pheros', name: 'Pheros', image: 'Fels.png', game: 'Awakening', Class: 'Mage Knight', role: 'Antagonist'},
+
+    //Tokyo Mirage Sessions #FE
+    //{id: '', name: '', image: '.png', game: '', Class: '', role: ''},
+    {id: 'Itsuki Aoi', name: 'Itsuki Aoi', image: 'TMS_Itsuki_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Lord', role: 'Protagonist'},
+    {id: 'Tsubasa Oribe', name: 'Tsubasa Oribe', image: 'TMS_Tsubasa_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Pegasus Knight', role: 'Protagonist'},
+    {id: 'Touma Akagi', name: 'Touma Akagi', image: 'TMS_Touma_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Cavalier', role: 'Other'},
+    {id: 'Kiria Kurono', name: 'Kiria Kurono', image: 'TMS_Kiria_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Dark Mage', role: 'Other'},
+    {id: 'Eleonora Yumizuru', name: 'Eleonora Yumizuru', image: 'TMS_Eleonora_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Archer', role: 'Other'},
+	{id: 'Mamori Minamoto', name: 'Mamori Minamoto', image: 'TMS_Mamori_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Knight', role: 'Other'},
+    {id: 'Yashiro Tsurugi', name: 'Yashiro Tsurugi', image: 'TMS_Yashiro_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Swordmaster', role: 'Other'},
+    {id: 'Mirage Chrom', name: 'Mirage Chrom', image: 'TMS_Chrom_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Lord', role: 'Other', base: 'Chrom'},
+    {id: 'Mirage Caeda', name: 'Mirage Caeda', image: 'TMS_Caeda_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Pegasus Knight', role: 'Other', base: 'Caeda'},
+    {id: 'Mirage Cain', name: 'Mirage Cain', image: 'TMS_Cain_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Cavalier', role: 'Other', base: 'Cain'},
+    {id: 'Mirage Tharja', name: 'Mirage Tharja', image: 'TMS_Tharja_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Dark Mage', role: 'Other', base: 'Tharja'},
+    {id: 'Mirage Virion', name: 'Virion', image: 'TMS_Virion_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Archer', role: 'Other', base: 'Virion'},
+    {id: 'Mirage Draug', name: 'Mirage Draug', image: 'TMS_Draug_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Knight', role: 'Other', base: 'Draug'},
+    {id: 'Mirage Navarre', name: 'Mirage Navarre', image: 'TMS_Navarre_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Swordmaster', role: 'Other', base: 'Navarre'},
+    {id: 'Mirage Tiki', name: 'Tiki', image: 'TMS_Tiki_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Miscellaneous', role: 'NPC', base: 'Tiki'},
+    {id: 'Garrick', name: 'Garrick', image: 'TMS_Garrick_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Swordmaster', role: 'Antagonist'},
+    {id: 'Mirage Aversa', name: 'Mirage Aversa', image: 'TMS_Aversa_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Pegasus Knight', role: 'Antagonist', base: 'Aversa'},
+    {id: 'Mirage Gangrel', name: 'Mirage Gangrel', image: 'TMS_Gangrel_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Swordmaster', role: 'Antagonist', base: 'Gangrel'},
+    {id: 'Mirage Excellus', name: 'Mirage Excellus', image: 'TMS_Excellus_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Mage', role: 'Antagonist', base: 'Excellus'},
+    {id: 'Mirage Abel', name: 'Mirage Abel', image: 'TMS_Abel_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Mage Knight', role: 'NPC', base: 'Abel'},
+    {id: "Mirage Lon'qu", name: "Mirage Lon'qu", image: "TMS_Lon'qu_portrait.png", game: 'Tokyo Mirage Sessions #FE', Class: 'Swordmaster', role: 'NPC', base: "Lon'qu"},
+    {id: 'Mirage Cervantes', name: 'Mirage Cervantes', image: 'TMS_Cervantes_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Knight', role: 'Antagonist', base: 'Cervantes'},
+    {id: 'Mirage Lorenz', name: 'Mirage Lorenz', image: 'TMS_Lorenz_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Knight', role: 'NPC', base: 'Lorenz'},
+    {id: 'Dark Yashiro', name: 'Dark Yashiro', image: 'Dark_Yashiro_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Swordmaster', role: 'Antagonist'},
+    {id: 'Mirage Gordin', name: 'Mirage Gordin', image: 'TMS_Gordin_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Archer', role: 'NPC', base: 'Gordin'},
+    {id: 'Mirage Linde', name: 'Mirage Linde', image: 'TMS_Linde_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Mage', role: 'NPC', base: 'Linde'},
+    {id: 'Mirage Dolph', name: 'Mirage Dolph', image: 'TMS_Dolph_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Knight', role: 'NPC', base: 'Dolph'},
+    {id: 'Mirage Macellan', name: 'Mirage Macellan', image: 'TMS_Macellan_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Knight', role: 'NPC', base: 'Macellan'},
+    {id: 'Mirage Jagen', name: 'Mirage Jagen', image: 'TMS_Jagen_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Cavalier', role: 'NPC', base: 'Jagen'},
+    {id: 'Mirage Palla', name: 'Mirage Palla', image: 'TMS_Palla_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Pegasus Knight', role: 'NPC', base: 'Palla'},
+    {id: 'Mirage Ogma', name: 'Mirage Ogma', image: 'TMS_Ogma_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Mercenary', role: 'NPC', base: 'Ogma'},
+    {id: 'Mirage Gharnef', name: 'Mirage Gharnef', image: 'TMS_Gharnef_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Dark Mage', role: 'Antagonist', base: 'Gharnef'},
+    {id: 'Mirage Bord', name: 'Mirage Bord', image: 'TMS_Bord_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Fighter', role: 'Antagonist', base: 'Bord'},
+    {id: 'Mirage Cord', name: 'Mirage Cord', image: 'TMS_Cord_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Fighter', role: 'Antagonist', base: 'Cord'},
+    {id: 'Mirage Pheros', name: 'Mirage Pheros', image: 'TMS_Pheros_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Pegasus Knight', role: 'Antagonist', base: 'Pheros'},
+    {id: 'Mirage Medeus', name: 'Mirage Medeus', image: 'TMS_Medeus_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Dragon', role: 'Antagonist', base: 'Medeus'},
+    {id: 'Maiko Shimazaki', name: 'Maiko Shimazaki', image: 'TMS_Maiko_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Miscellaneous', role: 'NPC'},
+    {id: 'Barry Goodman', name: 'Barry Goodman', image: 'TMS_Barry_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Knight', role: 'NPC'},
+    {id: 'Teru Gojuin', name: 'Teru Gojuin', image: 'Teru_Gojuin.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Swordmaster', role: 'Antagonist'},
+    {id: 'Yatsufusa Hatanaka', name: 'Yatsufusa Hatanaka', image: 'Yatsufusa_Hatanaka.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Dark Mage', role: 'Antagonist'},
+    {id: 'Ayaha Oribe', name: 'Ayaha Oribe', image: 'Ayaha_Oribe.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Pegasus Knight', role: 'NPC'},
+    {id: 'Rick Suzumoto', name: 'Rick Suzumoto', image: 'Rick_Suzumoto.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Mage Knight', role: 'NPC'},
+    {id: 'Shio', name: 'Shio', image: 'TMS_Shio_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Merchant', role: 'NPC'},
+    {id: 'Tiki = Waifu', name: 'Tiki = Waifu', image: 'Tiki = Waifu.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Miscellaneous', role: 'NPC'},
+    {id: 'Nobu Horinozawa', name: 'Nobu Horinozawa', image: 'Nobu_Horinozawa.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Swordmaster', role: 'Antagonist'},
+    {id: 'Kuen Tarachino', name: 'Kuen Tarachino', image: 'Kuen_Tarachino.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Mage', role: 'NPC'},
+    {id: 'Chouten Sawafuji', name: 'Chouten Sawafuji', image: 'Yoshiaki_Fujiwara.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Pegasus Knight', role: 'NPC'},
+    {id: 'Mahiro Tsurumi', name: 'Mahiro Tsurumi', image: 'Mahiro_Tsurumi.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Miscellaneous', role: 'NPC'},
+    {id: 'Chikaomi Tsurugi', name: 'Chikaomi Tsurugi', image: 'Chikaomi_Tsurugi.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Swordmaster', role: 'NPC'},
+    
+    //Fates
+    //{id: '', name: '', image: '.png', game: '', Class: '', role: ''},
+    //Both Routes
+    {id: 'Corrin', name: 'Corrin', image: 'Corrin.png', game: 'Fates', Class: 'Dragon', role: 'Protagonist'},
+    {id: 'Azura', name: 'Azura', image: 'Aqua_portrait.png', game: 'Fates', Class: 'Dancer', role: 'Protagonist'},
+    {id: 'Felicia', name: 'Felicia', image: 'Felicia_portrait.png', game: 'Fates', Class: 'Healer', role: 'Other'},
+    {id: 'Jakob', name: 'Jakob', image: 'Joker_portrait.png', game: 'Fates', Class: 'Healer', role: 'Other'},
+    {id: 'Silas', name: 'Silas', image: 'Cyrus_portrait.png', game: 'Fates', Class: 'Cavalier', role: 'Other'},
+    {id: 'Kaze', name: 'Kaze', image: 'Suzukaze_portrait.png', game: 'Fates', Class: 'Thief', role: 'Other'},
+    {id: 'Mozu', name: 'Mozu', image: 'Mozume_portrait.png', game: 'Fates', Class: 'Villager', role: 'Other'},
+    {id: 'Shura', name: 'Shura', image: 'Asura_portrait.png', game: 'Fates', Class: 'Thief', role: 'Other'},
+    	//Birthright
+    //{id: '', name: '', image: '.png', game: '', Class: '', role: ''},
+    {id: 'Ryoma', name: 'Ryoma', image: 'Ryoma_portrait.png', game: 'Fates', Class: 'Swordmaster', role: 'Other'},
+    {id: 'Hinoka', name: 'Hinoka', image: 'Hinoka_portrait.png', game: 'Fates', Class: 'Pegasus Knight', role: 'Other'},
+    {id: 'Takumi', name: 'Takumi', image: 'Takumi_portrait.png', game: 'Fates', Class: 'Archer', role: 'Other'},
+    {id: 'Sakura', name: 'Sakura', image: 'Sakura_portrait.png', game: 'Fates', Class: 'Healer', role: 'Other'},
+    {id: 'Saizo', name: 'Saizo', image: 'Saizou_portrait.png', game: 'Fates', Class: 'Thief', role: 'Other'},
+    {id: 'Kagero', name: 'Kagero', image: 'Kagerou_portrait.png', game: 'Fates', Class: 'Thief', role: 'Other'},
+    {id: 'Setsuna', name: 'Setsuna', image: 'Setsuna_portrait.png', game: 'Fates', Class: 'Archer', role: 'Other'},
+    {id: 'Azama', name: 'Azama', image: 'Asama_portrait.png', game: 'Fates', Class: 'Healer', role: 'Other'},
+    {id: 'Hinata', name: 'Hinata', image: 'Hinata_portrait.png', game: 'Fates', Class: 'Swordmaster', role: 'Other'},
+    {id: 'Oboro', name: 'Oboro', image: 'Oboro_portrait.png', game: 'Fates', Class: 'Soldier', role: 'Other'},
+    {id: 'Hana', name: 'Hana', image: 'Kazahana_portrait.png', game: 'Fates', Class: 'Swordmaster', role: 'Other'},
+    {id: 'Subaki', name: 'Subaki', image: 'Tsubaki_portrait.png', game: 'Fates', Class: 'Pegasus Knight', role: 'Other'},
+    {id: 'Hayato', name: 'Hayato', image: 'Tsukuyomi_portrait.png', game: 'Fates', Class: 'Mage', role: 'Other'},
+    {id: 'Rinkah', name: 'Rinkah', image: 'Rinka_portrait.png', game: 'Fates', Class: 'Fighter', role: 'Other'},
+    {id: 'Orochi', name: 'Orochi', image: 'Orochi_portrait.png', game: 'Fates', Class: 'Mage', role: 'Other'},
+    {id: 'Kaden', name: 'Kaden', image: 'Nishiki_portrait.png', game: 'Fates', Class: 'Beast', role: 'Other'},
+    {id: 'Reina', name: 'Reina', image: 'Yuugiri_portrait.png', game: 'Fates', Class: 'Pegasus Knight', role: 'Other'},
+    {id: 'Scarlet', name: 'Scarlet', image: 'Crimson_portrait.png', game: 'Fates', Class: 'Wyvern Rider', role: 'Other'},
+    	//Conquest
+    //{id: '', name: '', image: '.png', game: '', Class: '', role: ''},
+    {id: 'Xander', name: 'Xander', image: 'Xander_portrait.png', game: 'Fates', Class: 'Cavalier', role: 'Other'},
+    {id: 'Camilla', name: 'Camilla', image: 'Camilla_portrait.png', game: 'Fates', Class: 'Wyvern Rider', role: 'Other'},
+    {id: 'Leo', name: 'Leo', image: 'Leo_portrait.png', game: 'Fates', Class: 'Mage Knight', role: 'Other'},
+    {id: 'Elise', name: 'Elise', image: 'Elise_portrait.png', game: 'Fates', Class: 'Troubadour', role: 'Other'},
+    {id: 'Laslow', name: 'Laslow', image: 'Lazward_portrait.png', game: 'Fates', Class: 'Mercenary', role: 'Other', base: 'Inigo'},
+    {id: 'Peri', name: 'Peri', image: 'Pieri_portrait.png', game: 'Fates', Class: 'Cavalier', role: 'Other'},
+    {id: 'Selena(Fates)', name: 'Selena', image: 'Luna_portrait.png', game: 'Fates', Class: 'Mercenary', role: 'Other', base: 'Severa'},
+    {id: 'Beruka', name: 'Beruka', image: 'Belka_portrait.png', game: 'Fates', Class: 'Wyvern Rider', role: 'Other'},
+    {id: 'Odin', name: 'Odin', image: 'Odin_portrait.png', game: 'Fates', Class: 'Dark Mage', role: 'Other', base: 'Owain'},
+    {id: 'Niles', name: 'Niles', image: 'Zero_portrait.png', game: 'Fates', Class: 'Thief', role: 'Other'},
+    {id: 'Effie', name: 'Effie', image: 'Elfie_portrait.png', game: 'Fates', Class: 'Knight', role: 'Other'},
+    {id: 'Arthur (Fates)', name: 'Arthur', image: 'Harold_portrait.png', game: 'Fates', Class: 'Fighter', role: 'Other'},
+    {id: 'Nyx', name: 'Nyx', image: 'Nyx_portrait.png', game: 'Fates', Class: 'Dark Mage', role: 'Other'},
+    {id: 'Charlotte', name: 'Charlotte', image: 'Charlotte_portrait.png', game: 'Fates', Class: 'Fighter', role: 'Other'},
+    {id: 'Benny', name: 'Benny', image: 'Benoit_portrait.png', game: 'Fates', Class: 'Knight', role: 'Other'},
+    {id: 'Keaton', name: 'Keaton', image: 'Flannel_Portrait.png', game: 'Fates', Class: 'Beast', role: 'Other'},
+    {id: 'Gunther', name: 'Gunther', image: 'Gunther_portrait.png', game: 'Fates', Class: 'Cavalier', role: 'Other'},
+    {id: 'Flora', name: 'Flora', image: 'Flora_Portrait.png', game: 'Fates', Class: 'Healer', role: 'Other'},
+    	//The three oddballs
+    {id: 'Yukimura', name: 'Yukimura', image: 'Yukimura_portrait.png', game: 'Fates', Class: 'Archer', role: 'Other'},
+    {id: 'Izana', name: 'Izana', image: 'Izana_portrait.png', game: 'Fates', Class: 'Mage', role: 'Other'},
+    {id: 'Fuga', name: 'Fuga', image: 'Fuga.png', game: 'Fates', Class: 'Swordmaster', role: 'Other'},
+    	//Neutral Children
+    {id: 'Kana', name: 'Kana', image: 'Kanas_portrait.png', game: 'Fates', Class: 'Dragon', role: 'Other'},
+    {id: 'Shigure', name: 'Shigure', image: 'Shigure_portrait.png', game: 'Fates', Class: 'Pegasus Knight', role: 'Other'},
+    {id: 'Dwyer', name: 'Dwyer', image: 'Dia_portrait.png', game: 'Fates', Class: 'Troubadour', role: 'Other'},
+    {id: 'Sophie', name: 'Sophie', image: 'Sophie_portrait.png', game: 'Fates', Class: 'Cavalier', role: 'Other'},
+    {id: 'Midori', name: 'Midori', image: 'Midoriko_portrait.png', game: 'Fates', Class: 'Archer', role: 'Other'},
+    	//Birthright Children
+    {id: 'Shiro', name: 'Shiro', image: 'Shinonome_portrait.png', game: 'Fates', Class: 'Soldier', role: 'Other'},
+    {id: 'Kiragi', name: 'Kiragi', image: 'Kisaragi_fullportrait.png', game: 'Fates', Class: 'Archer', role: 'Other'},
+    {id: 'Asugi', name: 'Asugi', image: 'Grey_portrait.png', game: 'Fates', Class: 'Thief', role: 'Other'},
+    {id: 'Mitama', name: 'Mitama', image: 'Mitama_portrait.png', game: 'Fates', Class: 'Healer', role: 'Other'},
+    {id: 'Hisame', name: 'Hisame', image: 'Hisame.png', game: 'Fates', Class: 'Swordmaster', role: 'Other'},
+    {id: 'Caeldori', name: 'Caeldori', image: 'Matoi_portrait.png', game: 'Fates', Class: 'Pegasus Knight', role: 'Other'},
+    {id: 'Rhajat', name: 'Rhajat', image: 'Shara_portrait.png', game: 'Fates', Class: 'Mage', role: 'Other'},
+    {id: 'Selkie', name: 'Selkie', image: 'Kinu_portrait.png', game: 'Fates', Class: 'Beast', role: 'Other'},
+    	//Conquest Children
+    {id: 'Siegbert', name: 'Siegbert', image: 'Siegbert_portrait.png', game: 'Fates', Class: 'Cavalier', role: 'Other'},
+    {id: 'Forrest', name: 'Forrest', image: 'Foleo_portrait.png', game: 'Fates', Class: 'Troubadour', role: 'Other'},
+    {id: 'Soleil', name: 'Soleil', image: 'Soleil_portrait.png', game: 'Fates', Class: 'Mercenary', role: 'Other'},
+    {id: 'Ophelia', name: 'Ophelia', image: 'Ophelia_portrait.png', game: 'Fates', Class: 'Dark Mage', role: 'Other'},
+    {id: 'Nina', name: 'Nina', image: 'Eponne_fullportrait.png', game: 'Fates', Class: 'Thief', role: 'Other'},
+    {id: 'Percy', name: 'Percy', image: 'Lutz_portrait.png', game: 'Fates', Class: 'Wyvern Rider', role: 'Other'},
+    {id: 'Ignatius', name: 'Ignatius', image: 'Ignis_portrait.png', game: 'Fates', Class: 'Knight', role: 'Other'},
+    {id: 'Velouria', name: 'Velouria', image: 'Velor_portrait.png', game: 'Fates', Class: 'Beast', role: 'Other'},
+    //Anna
+    {id: 'Fates Anna', name: 'Fates Anna', image: 'Anna_fates_portrait.png', game: 'Fates', Class: 'Thief', role: 'Other'},
+    	//Capturable Characters
+    {id: 'Lloyd(Fates)', name: 'Lloyd(Fates)', image: 'William_portrait.png', game: 'Fates', Class: 'Fighter', role: 'Antagonist'},
+    {id: 'Llewelyn', name: 'Llewelyn', image: 'Llewelyn.png', game: 'Fates', Class: 'Fighter', role: 'Antagonist'},
+    {id: 'Nichol', name: 'Nichol', image: 'Nacht_portrait.png', game: 'Fates', Class: 'Wyvern Rider', role: 'Antagonist'},
+    {id: 'Candance', name: 'Candance', image: 'Candance.png', game: 'Fates', Class: 'Thief', role: 'Antagonist'},
+    {id: 'Daniela', name: 'Daniela', image: 'Daniela_portrait.png', game: 'Fates', Class: 'Mage Knight', role: 'Antagonist'},
+    {id: 'Haitaka', name: 'Haitaka', image: 'Haitaka_portrait.png', game: 'Fates', Class: 'Soldier', role: 'Antagonist'},
+    {id: 'Kumagera', name: 'Kumagera', image: 'Kumagera_portrait.png', game: 'Fates', Class: 'Fighter', role: 'Antagonist'},
+    {id: 'Tarba', name: 'Tarba', image: 'Banba_portrait.png', game: 'Fates', Class: 'Fighter', role: 'Antagonist'},
+    {id: 'Funke', name: 'Funke', image: 'Funk_portrait.png', game: 'Fates', Class: 'Thief', role: 'Antagonist'},
+    {id: 'Daichi', name: 'Daichi', image: 'Daichi_portrait.png', game: 'Fates', Class: 'Soldier', role: 'Antagonist'},
+    {id: 'Gazak', name: 'Gazak', image: 'Gazzack_portrait.png', game: 'Fates', Class: 'Fighter', role: 'Antagonist'},
+    {id: 'Senno', name: 'Senno', image: 'Senou_portrait.png', game: 'Fates', Class: 'Archer', role: 'Antagonist'},
+    {id: 'Zhara', name: 'Zhara', image: 'Vashala_portrait.png', game: 'Fates', Class: 'Mercenary', role: 'Antagonist'},
+    	//NPCs
+    {id: 'Lilith', name: 'Lilith', image: 'Human_lilith.png', game: 'Fates', Class: 'Dragon', role: 'NPC'},
+    {id: 'Rainbow Sage', name: 'Rainbow Sage', image: 'Rainbow_Sage_portrait.png', game: 'Fates', Class: 'Dragon', role: 'NPC'},
+    {id: 'Layla', name: 'Layla', image: 'Lala_portrait.png', game: 'Fates', Class: 'Dancer', role: 'NPC'},
+    {id: 'Cassita', name: 'Cassita', image: 'Casita_portrait.png', game: 'Fates', Class: 'Villager', role: 'NPC'},
+
+    	// Antagonists
+    //{id: '', name: '', image: '.png', game: '', Class: '', role: ''},
+    {id: 'Hans', name: 'Hans', image: 'Hans.png', game: 'Fates', Class: 'Fighter', role: 'Antagonist'},
+    {id: 'Iago', name: 'Iago', image: 'Iago_portrait.png', game: 'Fates', Class: 'Dark Mage', role: 'Antagonist'},
+    {id: 'Garon', name: 'Garon', image: 'Garon_portrait.png', game: 'Fates', Class: 'Emperor', role: 'Antagonist'},
+    {id: 'Anakos', name: 'Anakos', image: 'Anankos_Dark_Mask.png', game: 'Fates', Class: 'Dragon', role: 'Antagonist'},
+    {id: 'Zola', name: 'Zola', image: 'Zola.png', game: 'Fates', Class: 'Dark Mage', role: 'Antagonist'},
+    {id: 'Arete', name: 'Arete', image: 'Shinmei_portrait.png', game: 'Fates', Class: 'Mage Knight', role: 'Antagonist'},
+    {id: 'Mikoto', name: 'Mikoto', image: 'Mikoto_portrait.png', game: 'Fates', Class: 'Healer', role: 'NPC'},
+    {id: 'Sumeragi', name: 'Sumeragi', image: 'Sumeragi_portrait.png', game: 'Fates', Class: 'Swordmaster', role: 'Antagonist'},
+	{id: 'Kotaro', name: 'Kotaro', image: 'Kotarou.png', game: 'Fates', Class: 'Ninja', role: 'Antagonist'},
+	{id: 'Kilma', name: 'Kilma', image: 'Kilma.png', game: 'Fates', Class: 'Dark Mage', role: 'NPC'},
+	{id: 'Anthony', name: 'Anthony', image: 'Anthony.png', game: 'Fates', Class: 'Villager', role: 'Antagonist'},
+
+    //Heroes
+    //{id: '', name: '', image: '.png', game: '', Class: '', role: ''},
+    {id: 'Kiran', name: 'Kiran', image: 'Summoner_FEH_Sprite.PNG.png', game: 'Heroes', Class: 'Miscellaneous', role: 'Protagonist'},
+    {id: 'Alfonse', name: 'Alfonse', image: 'Portrait_Alfonse_Heroes.png', game: 'Heroes', Class: 'Lord', role: 'Protagonist'},
+    {id: 'Sharena', name: 'Sharena', image: 'Portrait_Sharena_Heroes.png', game: 'Heroes', Class: 'Lord', role: 'Protagonist'},
+    {id: 'Commander Anna', name: 'Anna', image: 'Portrait_Anna_Heroes.png', game: 'Heroes', Class: 'Fighter', role: 'Other'},
+    {id: 'Gustav', name: 'Gustav', image: 'Portrait_Gustav_Heroes.png', game: 'Heroes', Class: 'Cavalier', role: 'Other'},
+    {id: 'Henriette', name: 'Henriette', image: 'Portrait_Henriette_Heroes.png', game: 'Heroes', Class: 'Mage', role: 'Other'},
+    {id: 'Feh', name: 'Feh', image: 'Feh_the_Owl.png', game: 'Heroes', Class: 'Miscellaneous', role: 'NPC'},
+    {id: 'Fjorm', name: 'Fjorm', image: 'Portrait_Fjorm_Heroes.png', game: 'Heroes', Class: 'Lord', role: 'Protagonist'},
+    {id: 'Gunnthrá', name: 'Gunnthrá', image: 'Portrait_Gunnthra_Heroes.png', game: 'Heroes', Class: 'Mage Knight', role: 'Other'},
+    {id: 'Hríd', name: 'Hríd', image: 'Hrid.png', game: 'Heroes', Class: 'Cavalier', role: 'Other'},
+    {id: 'Ylgr', name: 'Ylgr', image: 'Portrait_Ylgr_Heroes.png', game: 'Heroes', Class: 'Thief', role: 'Other'},
+    {id: 'Veronica', name: 'Veronica', image: 'Portrait_Veronica_Heroes.png', game: 'Heroes', Class: 'Dark Mage', role: 'Antagonist'},
+    {id: 'Bruno', name: 'Bruno', image: 'Portrait_Mysterious_Heroes.png', game: 'Heroes', Class: 'Mage Knight', role: 'Other'},
+    {id: 'Surtr', name: 'Surtr', image: 'Portrait_Surtr_Heroes.png', game: 'Heroes', Class: 'Emperor', role: 'Antagonist'},
+    {id: 'Laegjarn', name: 'Laegjarn', image: 'Portrait_Laegjarn_Heroes.png', game: 'Heroes', Class: 'Wyvern Rider', role: 'Antagonist'},
+    {id: 'Laevatein', name: 'Laevatein', image: 'Portrait_Laevatein_Heroes.png', game: 'Heroes', Class: 'Swordmaster', role: 'Antagonist'},
+    {id: 'Loki', name: 'Loki', image: 'Portrait_Loki_Heroes.png', game: 'Heroes', Class: 'Healer', role: 'Antagonist'},
+    {id: 'Helbindi', name: 'Helbindi', image: 'Portrait_Helbindi_Heroes.png', game: 'Heroes', Class: 'Enemy Ax', role: 'Antagonist'},
+    {id: 'Hel', name: 'Hel', image: 'Portrait_Hel_Heroes.png', game: 'Heroes', Class: 'Goddess', role: 'Antagonist'},
+    {id: 'Eir', name: 'Eir', image: 'Portrait_Eir_Heroes.png', game: 'Heroes', Class: 'Pegasus Knight', role: 'Other'},
+    {id: 'Líf', name: 'Líf', image: 'Lif.png', game: 'Heroes', Class: 'Lord', role: 'Antagonist'},
+    {id: 'Thrasir', name: 'Thrasir', image: 'Portrait_Thrasir_Heroes.png', game: 'Heroes', Class: 'Dark Mage', role: 'Antagonist'},
+    
+    //Warriors
+    //{id: '', name: '', image: '.png', game: '', Class: '', role: ''},
+    {id: 'Rowan', name: 'Rowan', image: 'Rowan_Portrait_Warriors.png', game: 'Warriors', Class: 'Lord', role: 'Protagonist'},
+    {id: 'Lianna', name: 'Lianna', image: 'Lianna_Portrait_Warriors.png', game: 'Warriors', Class: 'Lord', role: 'Protagonist'},
+    {id: 'Warriors Anna', name: 'Anna', image: 'Anna_Portrait_Warriors.png', game: 'Warriors', Class: 'Thief', role: 'Other'},
+    {id: 'Darios', name: 'Darios', image: 'Dario_Portrait_Warriors.png', game: 'Warriors', Class: 'Lord', role: 'Antagonist'},
+    {id: 'Yelena', name: 'Yelena', image: 'Yelena_Portrait_Warriors.png', game: 'Warriors', Class: 'Miscellaneous', role: 'NPC'},
+    {id: 'Oskar', name: 'Oskar', image: 'Oskar_Portrait_Warriors.png', game: 'Warriors', Class: 'Emperor', role: 'Antagonist'},
+    {id: 'Velezark', name: 'Velezark', image: 'Velezark_Portrait_Warriors.png', game: 'Warriors', Class: 'Dragon', role: 'Antagonist'},
+    //Three Houses
+    //{id: '', name: '', image: '.png', game: '', Class: '', role: ''},
+    
+        
+    //Cipher
+    //{id: '', name: '', image: '.png', game: '', Class: '', role: ''},
+    {id: 'Emma', name: 'Emma', image: 'Emma_Echoes_Portrait.png', game: 'Cipher', Class: 'Pegasus Knight', role: 'Other'},
+    {id: 'Randal', name: 'Randal', image: 'Randal_Echoes_Portrait.png', game: 'Cipher', Class: 'Cavalier', role: 'Other'},
+    {id: 'Yuzu', name: 'Yuzu', image: 'Yuzu_Echoes_Portrait.png', game: 'Cipher', Class: 'Swordmaster', role: 'Other'},
+    {id: 'Shade', name: 'Shade', image: 'Shade_Echoes_Portrait.png', game: 'Cipher', Class: 'Dark Mage', role: 'Other'},
+    {id: 'Alice', name: 'Alice', image: 'Mayo_Alice1.png', game: 'Cipher', Class: 'Mage Knight', role: 'Other'},
+    {id: 'Valjean', name: 'Valjean', image: 'Mayo_Valjean1.png', game: 'Cipher', Class: 'Knight', role: 'Other'},
+    {id: 'Niamh', name: 'Niamh', image: 'NiamhMayo1.png', game: 'Cipher', Class: 'Swordmaster', role: 'Other'}
+    
+];
+
+var myPicker = new picker.Picker({
+    items: items,
+    localStorageKey: 'picker-state',
+    defaultSettings: {
+        games: ['Awakening', 'Fates', 'Shadows of Valencia', 'Mystery of the Emblem', 'Binding Blade', 'Blazing Blade', 'Sacred Stones', 'Cipher', 'Genealogy of the Holy War', 'Thracia 776', 'Tellius', 'Tokyo Mirage Sessions #FE', 'Heroes', 'Warriors'],
+        Classes: ['Mage', 'Lord', 'Dragon', 'Healer', 'Cavalier', 'Archer', 'Fighter', 'Pegasus Knight', 'Knight', 'Villager', 'Swordmaster', 'Troubadour', 'Beast', 'Thief', 'Mercenary', 'Dark Mage', 'Dancer', 'Wyvern Rider', 'Mage Knight', 'Enemy Ax', 'Bow Knight', 'Emperor', 'Soldier', 'Goddess', 'Miscellaneous'],
+        roles: ['Protagonist', 'Antagonist', 'Other', 'NPC'],
+        noDuplicates: true
+    },
+/* 
+    shouldIncludeItem: function(item, settings) {
+        // Include only if:
+        // 1. the character's game is in the list of games we've checked, and
+        // 2. we haven't checked the "playable only" box, or the character is a playable character.
+        return settings.games.indexOf(item.game) !== -1 && settings.Classes.indexOf(item.Class) !== -1 && settings.roles.indexOf(item.role) !== -1;
+    }
+ */
+ 
+     getFilteredItems: function(settings) {
+        var used = {};
+        var filteredList = [];
+        for (var i = 0; i < items.length; i++) {
+            // Skip item if:
+            // 1. the character's role is not in the list of roles we've checked, or
+            // 2. we checked the "recurring only" box, and the character is not a recurring character.
+            if (settings.roles.indexOf(items[i].role) === -1 || settings.games.indexOf(items[i].game) === -1 || settings.Classes.indexOf(items[i].Class) === -1) continue;
+            
+
+            // If we want no duplicates, make sure we're not already including a different incarnation of the same character.
+            if (settings.noDuplicates) {
+                // Skip if we're already including a character with this base.
+                if (items[i].base && used[items[i].base]) continue;
+
+                // Record that we're including this character, so we don't introduce duplicates later.
+                used[items[i].base || items[i].id] = true;
+            }
+            filteredList.push(items[i].id);
+        }
+        return filteredList;
+    }
+
+
+});
+
+var pickerUI = new PickerUI(myPicker, {
+    elements: {
+        pick: "#pick",
+        pass: "#pass",
+        undo: "#undo",
+        redo: "#redo",
+        reset: ".reset",
+        evaluating: "#evaluating",
+        favorites: "#favorites",
+        settings: {
+            games: '.games',
+            Classes: '.Classes',
+            roles: '.roles',
+            noDuplicates: '#no-Duplicates'
+        }
+    }
+});
+
+pickerUI.initialize();
+
+/* Sortable favorites - you can safely remove this, and the Sortable.min.js script, if you don't want to be able to sort your favorite list. */
+var sortable = new Sortable(pickerUI.elem.favorites.get(0), {
+    draggable: '.item',
+    animation: 100,
+    onStart: function() {
+        pickerUI.elem.favorites.addClass("sorting");
+    },
+    onEnd: function() {
+        pickerUI.elem.favorites.removeClass("sorting");
+    },
+    onUpdate: function() {
+        myPicker.setFavorites(pickerUI.elem.favorites.children().map(function() {
+            return pickerUI.getItem(this);
+        }).get());
+        pickerUI.update(true);
+    }
+});
+/* End sortable favorites */
+</script>
+</body>
+</html>
