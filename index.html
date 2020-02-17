@@ -234,7 +234,7 @@ button.disabled:hover {
 <p> <b>Include Classes:</b>
 <label><input type="checkbox" name="Classes" class="Classes" value="Lord"> Lord (class)</label>
 <label><input type="checkbox" name="Classes" class="Classes" value="Mage"> Anima Mage</label>
-<label><input type="checkbox" name="Classes" class="Classes" value="Healer"> Cleric/Priest/Maid</label>
+<label><input type="checkbox" name="Classes" class="Classes" value="Healer"> Cleric/Priest/Maid/War Monk</label>
 <label><input type="checkbox" name="Classes" class="Classes" value="Light Mage"> Light Mage</label>
 <label><input type="checkbox" name="Classes" class="Classes" value="Cavalier"> Cavalier</label>
 <label><input type="checkbox" name="Classes" class="Classes" value="Archer"> Archer/Mechanist/Apothecary</label>
@@ -1191,10 +1191,12 @@ var items = [
     {id: 'Eir', name: 'Eir', image: 'Portrait_Eir_Heroes.png', game: 'Heroes', Class: 'Pegasus Knight', role: 'Other'},
     {id: 'Líf', name: 'Líf', image: 'Lif.png', game: 'Heroes', Class: 'Lord', role: 'Antagonist'},
     {id: 'Thrasir', name: 'Thrasir', image: 'Portrait_Thrasir_Heroes.png', game: 'Heroes', Class: 'Dark Mage', role: 'Antagonist'},
-    {id: 'Thórr', name: 'Thórr', image: 'Thorr.png', game: 'Heroes', Class: 'Fighter', role: 'Other'},
+    {id: 'Thórr', name: 'Thórr', image: 'Portrait_Th%3Frr_Heroes.png', game: 'Heroes', Class: 'Fighter', role: 'Other'},
     {id: 'Peony', name: 'Peony', image: 'Portrait_Peony_Heroes.png', game: 'Heroes', Class: 'Dancer', role: 'Other'},
     {id: 'Triandra', name: 'Triandra', image: 'Portrait_Triandra_Heroes.png', game: 'Heroes', Class: 'Dancer', role: 'Antagonist'},
-    
+    {id: 'Plumeria', name: 'Plumeria', image: 'Portrait_Plumeria_Heroes.png', game: 'Heroes', Class: 'Dancer', role: 'Antagonist'},
+    {id: 'Freyr', name: 'Freyr', image: 'Portrait_Freyr_Heroes.png', game: 'Heroes', Class: 'Miscellaneous', role: 'NPC'},
+	
     //Warriors
     //{id: '', name: '', image: '.png', game: '', Class: '', role: ''},
     {id: 'Rowan', name: 'Rowan', image: 'Rowan_Portrait_Warriors.png', game: 'Warriors', Class: 'Lord', role: 'Protagonist'},
@@ -1281,10 +1283,16 @@ var items = [
 	{id: 'Three Houses Anna', name: 'Three Houses Anna', image: 'Anna_3_Houses_portrait.png', game: 'Three Houses', Class: 'Villager', role: 'Other'},
 	
 	//DLC
-	{id: 'Balthus', name: 'Balthus', image: 'Balthus_Portrait.png', game: 'Three Houses', Class: 'Villager', role: 'Other'},
-	{id: 'Constance', name: 'Constance', image: 'Constance_Portrait.png', game: 'Three Houses', Class: 'Villager', role: 'Other'},
-	{id: 'Hapi', name: 'Hapi', image: 'Hapi_Portrait.png', game: 'Three Houses', Class: 'Villager', role: 'Other'},
-	{id: 'Yuri', name: 'Yuri', image: 'Yuri_Portrait.png', game: 'Three Houses', Class: 'Villager', role: 'Other'},
+	{id: 'Yuri', name: 'Yuri', image: 'Yuri_Portrait.png', game: 'Three Houses', Class: 'Thief', role: 'Other'},
+	{id: 'Timeskip Yuri', name: 'Timeskip Yuri', image: 'Yuri_Portrait_5_Years.png', game: 'Three Houses', Class: 'Thief', role: 'Other'},	
+	{id: 'Balthus', name: 'Balthus', image: 'Balthus_Portrait.png', game: 'Three Houses', Class: 'Fighter', role: 'Other'},
+	{id: 'Timeskip Balthus', name: 'Timeskip Balthus', image: 'Balthus_Portrait_5_Years.png', game: 'Three Houses', Class: 'Fighter', role: 'Other'},	
+	{id: 'Constance', name: 'Constance', image: 'Constance_Portrait.png', game: 'Three Houses', Class: 'Pegasus Knight', role: 'Other'},
+	{id: 'Timeskip Constance', name: 'Timeskip Constance', image: 'Constance_Portrait_5_Years2.png', game: 'Three Houses', Class: 'Pegasus Knight', role: 'Other'},
+	{id: 'Hapi', name: 'Hapi', image: 'Hapi_Portrait.png', game: 'Three Houses', Class: 'Mage Knight', role: 'Other'},
+	{id: 'Timeskip Hapi', name: 'Timeskip Hapi', image: 'Hapi_Portrait_5_Years.png', game: 'Three Houses', Class: 'Mage Knight', role: 'Other'},
+	{id: 'Aelfric', name: 'Aelfric', image: '3H_Aelfric_Portrait.png', game: 'Three Houses', Class: 'Healer', role: 'NPC'},
+
 	
 		//Antagonists
 	{id: 'Kostas', name: 'Kostas', image: 'Kostas_Portrait.png', game: 'Three Houses', Class: 'Enemy Ax', role: 'Antagonist'},
