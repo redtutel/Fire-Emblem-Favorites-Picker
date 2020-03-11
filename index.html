@@ -1420,12 +1420,24 @@ var sortable = new Sortable(pickerUI.elem.favorites.get(0), {
     onEnd: function() {
         pickerUI.elem.favorites.removeClass("sorting");
     },
+	//To Display foound favorites
+    onUpdateTwo: function(updateType)
+        {
+	var totalCharacters = this.picker.state.items.length;
+        var favorites = this.picker.state.arrays.favorites.length;
+        var eliminated = this.picker.state.arrays.eliminated.length;
+        var remaining = Math.max(0, totalPokemon - favorites - eliminated - 1);
+
+        $("#remaining").text(remaining);        
+	},	
     onUpdate: function() {
         myPicker.setFavorites(pickerUI.elem.favorites.children().map(function() {
             return pickerUI.getItem(this);
         }).get());
         pickerUI.update(true);
     }
+	
+
 });
 /* End sortable favorites */
 </script>
