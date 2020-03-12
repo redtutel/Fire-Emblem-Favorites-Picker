@@ -296,8 +296,12 @@ button.disabled:hover {
 
 <p id="buttons"><button id="pick">Pick</button> <button id="pass">Pass</button> <button id="undo">Undo</button> <button id="redo">Redo</button> <button class="reset">Reset</button>
 </p>
-</div>
 
+<ol id = "remaining">
+	
+</div>
+	
+	
 <div id="secondary">
 <h2>Found favorites</h2>
 	
@@ -1421,6 +1425,16 @@ var sortable = new Sortable(pickerUI.elem.favorites.get(0), {
         pickerUI.elem.favorites.removeClass("sorting");
     },
 	//To Display foound favorites
+	
+		onUpdate: function(updateType) {
+        var totalPokemon = this.picker.state.items.length;
+        var favorites = this.picker.state.arrays.favorites.length;
+        var eliminated = this.picker.state.arrays.eliminated.length;
+        var remaining = Math.max(0, totalPokemon - favorites - eliminated - 1);
+
+        $("#remaining").text(remaining);
+    },
+
 	
     onUpdate: function() {
         myPicker.setFavorites(pickerUI.elem.favorites.children().map(function() {
