@@ -294,11 +294,34 @@ button.disabled:hover {
 <ul id="evaluating" class="item-list">
 </ul>
 
+	.picker-info {
+    text-align:center;
+    font-size:smaller;
+}
+
+#progress-bar {
+    display: block;
+    margin: auto;
+    height: 15px;
+    width: 150px;
+    margin-top: 5px;
+    background: #CDF;
+}
+
+#progress-bar span {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: #58F;
+}
+
 <p id="buttons"><button id="pick">Pick</button> <button id="pass">Pass</button> <button id="undo">Undo</button> <button id="redo">Redo</button> <button class="reset">Reset</button>
 </p>
 
-<ol id = "remaining">
-	
+<div class="picker-info">
+    <p>Characters remaining to be eliminated before next favorite is found: <span id="remaining"></span></p>
+    <p>Progress towards next favorite: <span id="progress-bar"><span></span></span></p>
+</div>	
 </div>
 	
 	
@@ -1426,13 +1449,16 @@ var sortable = new Sortable(pickerUI.elem.favorites.get(0), {
     },
 	//To Display foound favorites
 	
-		onUpdate: function(updateType) {
-        var totalPokemon = this.picker.state.items.length;
+    onUpdate: function(updateType) {
+        var total = this.picker.state.items.length;
         var favorites = this.picker.state.arrays.favorites.length;
         var eliminated = this.picker.state.arrays.eliminated.length;
-        var remaining = Math.max(0, totalPokemon - favorites - eliminated - 1);
+        var remaining = Math.max(0, total - favorites - eliminated - 1);
 
         $("#remaining").text(remaining);
+
+        updateProgressBar((1 - (remaining / this.picker.state.roundSize)) * 100, updateType);
+    }
     },
 
 	
