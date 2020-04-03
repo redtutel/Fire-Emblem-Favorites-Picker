@@ -203,6 +203,27 @@ button.disabled:hover {
     position:relative;
     z-index:3;
 }
+	
+.picker-info {
+    text-align:center;
+    font-size:smaller;
+}
+
+#progress-bar {
+    display: block;
+    margin: auto;
+    height: 15px;
+    width: 150px;
+    margin-top: 5px;
+    background: #CDF;
+}
+
+#progress-bar span {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: #58F;
+}
 </style>
 </head>
 <body>
@@ -294,26 +315,6 @@ button.disabled:hover {
 <ul id="evaluating" class="item-list">
 </ul>
 
-	.picker-info {
-    text-align:center;
-    font-size:smaller;
-}
-
-#progress-bar {
-    display: block;
-    margin: auto;
-    height: 15px;
-    width: 150px;
-    margin-top: 5px;
-    background: #CDF;
-}
-
-#progress-bar span {
-    display: block;
-    height: 100%;
-    width: 0;
-    background: #58F;
-}
 
 <p id="buttons"><button id="pick">Pick</button> <button id="pass">Pass</button> <button id="undo">Undo</button> <button id="redo">Redo</button> <button class="reset">Reset</button>
 </p>
