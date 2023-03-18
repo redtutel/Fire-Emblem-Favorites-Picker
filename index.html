@@ -245,7 +245,7 @@ button.disabled:hover {
 <label><input type="checkbox" name="games" class="games" value="Tellius"> Path of Radiance/Radiant Dawn</label>
 <label><input type="checkbox" name="games" class="games" value="Awakening"> Awakening</label>
 <label><input type="checkbox" name="games" class="games" value="Fates"> Fates</label>
-<label><input type="checkbox" name="games" class="games" value="Three Houses"> Three Houses</label>
+<label><input type="checkbox" name="games" class="games" value="Three Houses/Hopes"> Three Houses</label>
 <label><input type="checkbox" name="games" class="games" value="Tokyo Mirage Sessions #FE"> Tokyo Mirage Sessions #FE</label>
 <label><input type="checkbox" name="games" class="games" value="Cipher"> Cipher</label>
 <label><input type="checkbox" name="games" class="games" value="Heroes"> Heroes</label>
@@ -1198,6 +1198,7 @@ var items = [
 
     //Heroes
     //{id: '', name: '', image: '.png', game: '', Class: '', role: ''},
+	//Askr
     {id: 'Kiran', name: 'Kiran', image: 'Portrait_Kiran_Custom_0_Heroes.png', game: 'Heroes', Class: 'Miscellaneous', role: 'Protagonist'},
     {id: 'Alfonse', name: 'Alfonse', image: 'Portrait_Alfonse_Heroes.png', game: 'Heroes', Class: 'Lord', role: 'Protagonist'},
     {id: 'Sharena', name: 'Sharena', image: 'Portrait_Sharena_Heroes.png', game: 'Heroes', Class: 'Lord', role: 'Protagonist'},
@@ -1205,33 +1206,72 @@ var items = [
     {id: 'Gustav', name: 'Gustav', image: 'Portrait_Gustav_Heroes.png', game: 'Heroes', Class: 'Cavalier', role: 'Other'},
     {id: 'Henriette', name: 'Henriette', image: 'Portrait_Henriette_Heroes.png', game: 'Heroes', Class: 'Mage', role: 'Other'},
     {id: 'Feh', name: 'Feh', image: 'Feh_the_Owl.png', game: 'Heroes', Class: 'Miscellaneous', role: 'NPC'},
+    {id: 'Fehnix', name: 'Fehnix', image: 'Portrait_Fehnix_Heroes.png', game: 'Heroes', Class: 'Miscellaneous', role: 'NPC'},
+    {id: 'Ash', name: 'Ash', image: 'Portrait_Ash_Heroes.png', game: 'Heroes', Class: 'Beast', role: 'Other'},
+    {id: 'Askr', name: 'Askr', image: 'Portrait_Askr_Heroes.png', game: 'Heroes', Class: 'Beast', role: 'Other'},
+ 	//Embla
+    {id: 'Veronica', name: 'Veronica', image: 'Portrait_Veronica_Heroes.png', game: 'Heroes', Class: 'Dark Mage', role: 'Antagonist'},
+    {id: 'Bruno', name: 'Bruno', image: 'Portrait_Mysterious_Heroes.png', game: 'Heroes', Class: 'Mage Knight', role: 'Other'},
+    {id: 'Letizia', name: 'Letizia', image: 'Portrait_Letizia_Heroes.png', game: 'Heroes', Class: 'Mage Knight', role: 'Antagonist'},
+    {id: 'Embla', name: 'Embla', image: 'Portrait_Embla_Heroes.png', game: 'Heroes', Class: 'Beast', role: 'Antagonist'},
+    {id: 'Elm', name: 'Elm', image: 'Portrait_Elm_Heroes.png', game: 'Heroes', Class: 'Beast', role: 'Antagonist'},
+	
+	//Nifl
     {id: 'Fjorm', name: 'Fjorm', image: 'Portrait_Fjorm_Heroes.png', game: 'Heroes', Class: 'Lord', role: 'Other'},
     {id: 'Gunnthrá', name: 'Gunnthrá', image: 'Portrait_Gunnthra_Heroes.png', game: 'Heroes', Class: 'Mage Knight', role: 'Other'},
     {id: 'Hríd', name: 'Hríd', image: 'Hrid.png', game: 'Heroes', Class: 'Cavalier', role: 'Other'},
     {id: 'Ylgr', name: 'Ylgr', image: 'Portrait_Ylgr_Heroes.png', game: 'Heroes', Class: 'Thief', role: 'Other'},
-    {id: 'Veronica', name: 'Veronica', image: 'Portrait_Veronica_Heroes.png', game: 'Heroes', Class: 'Dark Mage', role: 'Antagonist'},
-    {id: 'Bruno', name: 'Bruno', image: 'Portrait_Mysterious_Heroes.png', game: 'Heroes', Class: 'Mage Knight', role: 'Other'},
+    {id: 'Nifl', name: 'Nifl', image: 'Portrait_Nifl_Heroes.png', game: 'Heroes', Class: 'Dragon', role: 'Other'},
+	
+	//Muspell
     {id: 'Surtr', name: 'Surtr', image: 'Portrait_Surtr_Heroes.png', game: 'Heroes', Class: 'Emperor', role: 'Antagonist'},
     {id: 'Laegjarn', name: 'Laegjarn', image: 'Portrait_Laegjarn_Heroes.png', game: 'Heroes', Class: 'Wyvern Rider', role: 'Antagonist'},
     {id: 'Laevatein', name: 'Laevatein', image: 'Portrait_Laevatein_Heroes.png', game: 'Heroes', Class: 'Swordmaster', role: 'Antagonist'},
-    {id: 'Loki', name: 'Loki', image: 'Portrait_Loki_Heroes.png', game: 'Heroes', Class: 'Healer', role: 'Antagonist'},
     {id: 'Helbindi', name: 'Helbindi', image: 'Portrait_Helbindi_Heroes.png', game: 'Heroes', Class: 'Enemy Ax', role: 'Antagonist'},
-    {id: 'Hel', name: 'Hel', image: 'Portrait_Hel_Heroes.png', game: 'Heroes', Class: 'Goddess', role: 'Antagonist'},
+   {id: 'Muspell', name: 'Muspell', image: 'Portrait_M spell_Heroes.png', game: 'Heroes', Class: 'Dragon', role: 'Antagonist'},
+	
+	//Ymir
     {id: 'Eir', name: 'Eir', image: 'Portrait_Eir_Heroes.png', game: 'Heroes', Class: 'Pegasus Knight', role: 'Other'},
+    {id: 'Ymir', name: 'Ymir', image: 'Portrait_Ymir_Heroes.png', game: 'Heroes', Class: 'Dragon', role: 'Other'},
+
+	//Hel	
+    {id: 'Hel', name: 'Hel', image: 'Portrait_Hel_Heroes.png', game: 'Heroes', Class: 'Goddess', role: 'Antagonist'},
     {id: 'Líf', name: 'Líf', image: 'Lif.png', game: 'Heroes', Class: 'Lord', role: 'Antagonist'},
     {id: 'Thrasir', name: 'Thrasir', image: 'Portrait_Thrasir_Heroes.png', game: 'Heroes', Class: 'Dark Mage', role: 'Antagonist'},
+    {id: 'Ganglot', name: 'Ganglot', image: 'Portrait_Gangl t_Heroes.png', game: 'Heroes', Class: 'Fighter', role: 'Antagonist'},
+	
+	//Asgor
+    {id: 'Loki', name: 'Loki', image: 'Portrait_Loki_Heroes.png', game: 'Heroes', Class: 'Healer', role: 'Antagonist'},
     {id: 'Thórr', name: 'Thórr', image: 'Portrait_Thorr_Heroes.png', game: 'Heroes', Class: 'Fighter', role: 'Other'},
+    
+	//Ljósálfheimr
+    {id: 'Freyr', name: 'Freyr', image: 'Portrait_Freyr_Heroes.png', game: 'Heroes', Class: 'Beast', role: 'Other'},
     {id: 'Peony', name: 'Peony', image: 'Portrait_Peony_Heroes.png', game: 'Heroes', Class: 'Dancer', role: 'Other'},
+    {id: 'Mirabilis', name: 'Mirabilis', image: 'Portrait_Mirabilis_Heroes.png', game: 'Heroes', Class: 'Dancer', role: 'Other'},
+	
+	//Dökkálfheimr
     {id: 'Triandra', name: 'Triandra', image: 'Portrait_Triandra_Heroes.png', game: 'Heroes', Class: 'Dancer', role: 'Antagonist'},
     {id: 'Plumeria', name: 'Plumeria', image: 'Portrait_Plumeria_Heroes.png', game: 'Heroes', Class: 'Dancer', role: 'Antagonist'},
-    {id: 'Freyr', name: 'Freyr', image: 'Portrait_Freyr_Heroes.png', game: 'Heroes', Class: 'Beast', role: 'NPC'},
     {id: 'Freyja', name: 'Freyja', image: 'Portrait_Freyja_Heroes.png', game: 'Heroes', Class: 'Beast', role: 'Antagonist'},
+	
+	//Niðavellir
     {id: 'Reginn', name: 'Reginn', image: 'Portrait_Reginn_Heroes.png', game: 'Heroes', Class: 'Cavalier', role: 'Other'},
     {id: 'Otr', name: 'Otr', image: 'Portrait_Otr_Heroes.png', game: 'Heroes', Class: 'Cavalier', role: 'Antagonist'},
     {id: 'Fáfnir', name: 'Fáfnir', image: 'Portrait_Fáfnir_Heroes.png', game: 'Heroes', Class: 'Cavalier', role: 'Antagonist'},
     {id: 'Eitri', name: 'Eitri', image: 'Portrait_Eitri_Heroes.png', game: 'Heroes', Class: 'Mage', role: 'Antagonist'},
+	
+	//Jötunheimr
     {id: 'Dagr', name: 'Dagr', image: 'Portrait_Dagr_Heroes.png', game: 'Heroes', Class: 'Fighter', role: 'Other'},
-    {id: 'Nott', name: 'Nott', image: 'Portrait_Nott_Heroes.png', game: 'Heroes', Class: 'Soldier', role: 'NPC'},
+    {id: 'Nott', name: 'Nott', image: 'Portrait_Nott_Heroes.png', game: 'Heroes', Class: 'Soldier', role: 'Other'},
+	
+	//Vanaheimr
+	{id: 'Njörðr', name: 'Njörðr', image: 'Portrait_Nj r r_Heroes.png', game: 'Heroes', Class: 'Miscellaneous', role: 'NPC'},
+	{id: 'Seiðr', name: 'Seiðr', image: 'Portrait_Sei r_Heroes.png', game: 'Heroes', Class: 'Mage Knight', role: 'Other'},
+	{id: 'Heiðr', name: 'Heiðr', image: 'Portrait_Hei r_Heroes.png', game: 'Heroes', Class: 'Miscellaneous', role: 'NPC'},
+	{id: 'Nerþuz', name: 'Nerþuz', image: 'Portrait_Ner uz_Heroes.png', game: 'Heroes', Class: 'Beast', role: 'NPC'},
+	{id: 'Gullveig', name: 'Gullveig', image: 'Portrait_Gullveig_Heroes.png', game: 'Heroes', Class: 'Mage', role: 'Antagonist'},
+	
+	
 	
     //Warriors
     //{id: '', name: '', image: '.png', game: '', Class: '', role: ''},
@@ -1369,6 +1409,11 @@ var items = [
 	{id: 'Pallardo', name: 'Pallardo', image: 'Pallardo_portrait.png', game: 'Three Houses', Class: 'Thief', role: 'NPC'},
 	{id: 'Nader', name: 'Nader', image: 'Nader_portrait.png', game: 'Three Houses', Class: 'Wyvern Rider', role: 'NPC'},
 	{id: 'Gate Keeper', name: 'Gate Keeper', image: 'FE16_Soldier_Portrait.png', game: 'Three Houses', Class: 'Soldier', role: 'NPC'},
+	
+	//Three Hopes
+	
+	//Engage
+	
     //Cipher
     //{id: '', name: '', image: '.png', game: '', Class: '', role: ''},
     {id: 'Emma', name: 'Emma', image: 'Emma_Echoes_Portrait.png', game: 'Cipher', Class: 'Pegasus Knight', role: 'Other'},
