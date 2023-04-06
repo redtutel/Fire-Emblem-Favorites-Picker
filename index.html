@@ -246,6 +246,7 @@ button.disabled:hover {
 <label><input type="checkbox" name="games" class="games" value="Awakening"> Awakening</label>
 <label><input type="checkbox" name="games" class="games" value="Fates"> Fates</label>
 <label><input type="checkbox" name="games" class="games" value="Three Houses"> Three Houses/Hopes</label>
+<label><input type="checkbox" name="games" class="games" value="Engage"> Engage</label>
 <label><input type="checkbox" name="games" class="games" value="Tokyo Mirage Sessions #FE"> Tokyo Mirage Sessions #FE</label>
 <label><input type="checkbox" name="games" class="games" value="Cipher"> Cipher</label>
 <label><input type="checkbox" name="games" class="games" value="Heroes"> Heroes</label>
@@ -267,7 +268,7 @@ button.disabled:hover {
 <label><input type="checkbox" name="Classes" class="Classes" value="Knight">Knight</label>
 <label><input type="checkbox" name="Classes" class="Classes" value="Villager">Villager/Trainee/Commoner/Noble </label>
 <label><input type="checkbox" name="Classes" class="Classes" value="Swordmaster">Myrmidon/Samurai/Master of Arms</label>
-<label><input type="checkbox" name="Classes" class="Classes" value="Troubadour">Troubadour</label>
+<label><input type="checkbox" name="Classes" class="Classes" value="Troubadour/Royal Knight">Troubadour</label>
 </p>
 
 </p>
@@ -300,6 +301,7 @@ button.disabled:hover {
 <label><input type="checkbox" name="roles" class="roles" value="Other"> Other Playable Characters</label>
 <label><input type="checkbox" name="roles" class="roles" value="Antagonist"> Antagonist</label>
 <label><input type="checkbox" name="roles" class="roles" value="NPC"> Allied NPCs</label>
+	<label><input type="checkbox" name="roles" class="roles" value="Persona"> Emblems/Ally Mirages</label>
 
 </p>
 
@@ -1035,30 +1037,30 @@ var items = [
     {id: 'Eleonora Yumizuru', name: 'Eleonora Yumizuru', image: 'TMS_Eleonora_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Archer', role: 'Other'},
     {id: 'Mamori Minamoto', name: 'Mamori Minamoto', image: 'TMS_Mamori_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Knight', role: 'Other'},
     {id: 'Yashiro Tsurugi', name: 'Yashiro Tsurugi', image: 'TMS_Yashiro_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Swordmaster', role: 'Other'},
-    {id: 'Mirage Chrom', name: 'Mirage Chrom', image: 'TMS_Chrom_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Lord', role: 'Other', base: 'Chrom'},
-    {id: 'Mirage Caeda', name: 'Mirage Caeda', image: 'TMS_Caeda_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Pegasus Knight', role: 'Other', base: 'Caeda'},
-    {id: 'Mirage Cain', name: 'Mirage Cain', image: 'TMS_Cain_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Cavalier', role: 'Other', base: 'Cain'},
-    {id: 'Mirage Tharja', name: 'Mirage Tharja', image: 'TMS_Tharja_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Dark Mage', role: 'Other', base: 'Tharja'},
-    {id: 'Mirage Virion', name: 'Virion', image: 'TMS_Virion_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Archer', role: 'Other', base: 'Virion'},
-    {id: 'Mirage Draug', name: 'Mirage Draug', image: 'TMS_Draug_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Knight', role: 'Other', base: 'Draug'},
-    {id: 'Mirage Navarre', name: 'Mirage Navarre', image: 'TMS_Navarre_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Swordmaster', role: 'Other', base: 'Navarre'},
+    {id: 'Mirage Chrom', name: 'Mirage Chrom', image: 'TMS_Chrom_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Lord', role: 'Persona', base: 'Chrom'},
+    {id: 'Mirage Caeda', name: 'Mirage Caeda', image: 'TMS_Caeda_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Pegasus Knight', role: 'Persona', base: 'Caeda'},
+    {id: 'Mirage Cain', name: 'Mirage Cain', image: 'TMS_Cain_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Cavalier', role: 'Persona', base: 'Cain'},
+    {id: 'Mirage Tharja', name: 'Mirage Tharja', image: 'TMS_Tharja_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Dark Mage', role: 'Persona', base: 'Tharja'},
+    {id: 'Mirage Virion', name: 'Virion', image: 'TMS_Virion_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Archer', role: 'Persona', base: 'Virion'},
+    {id: 'Mirage Draug', name: 'Mirage Draug', image: 'TMS_Draug_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Knight', role: 'Persona', base: 'Draug'},
+    {id: 'Mirage Navarre', name: 'Mirage Navarre', image: 'TMS_Navarre_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Swordmaster', role: 'Persona', base: 'Navarre'},
     {id: 'Mirage Tiki', name: 'Tiki', image: 'TMS_Tiki_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Dragon', role: 'NPC', base: 'Tiki'},
     {id: 'Garrick', name: 'Garrick', image: 'TMS_Garrick_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Swordmaster', role: 'Antagonist'},
     {id: 'Mirage Aversa', name: 'Mirage Aversa', image: 'TMS_Aversa_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Pegasus Knight', role: 'Antagonist', base: 'Aversa'},
     {id: 'Mirage Gangrel', name: 'Mirage Gangrel', image: 'TMS_Gangrel_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Swordmaster', role: 'Antagonist', base: 'Gangrel'},
     {id: 'Mirage Excellus', name: 'Mirage Excellus', image: 'TMS_Excellus_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Mage', role: 'Antagonist', base: 'Excellus'},
-    {id: 'Mirage Abel', name: 'Mirage Abel', image: 'TMS_Abel_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Mage Knight', role: 'NPC', base: 'Abel'},
-    {id: "Mirage Lon'qu", name: "Mirage Lon'qu", image: "TMS_Lon'qu_portrait.png", game: 'Tokyo Mirage Sessions #FE', Class: 'Swordmaster', role: 'NPC', base: "Lon'qu"},
+    {id: 'Mirage Abel', name: 'Mirage Abel', image: 'TMS_Abel_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Mage Knight', role: 'Persona', base: 'Abel'},
+    {id: "Mirage Lon'qu", name: "Mirage Lon'qu", image: "TMS_Lon'qu_portrait.png", game: 'Tokyo Mirage Sessions #FE', Class: 'Swordmaster', role: 'Persona', base: "Lon'qu"},
     {id: 'Mirage Cervantes', name: 'Mirage Cervantes', image: 'TMS_Cervantes_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Knight', role: 'Antagonist', base: 'Cervantes'},
-    {id: 'Mirage Lorenz', name: 'Mirage Lorenz', image: 'TMS_Lorenz_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Knight', role: 'NPC', base: 'Lorenz'},
+    {id: 'Mirage Lorenz', name: 'Mirage Lorenz', image: 'TMS_Lorenz_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Knight', role: 'Persona', base: 'Lorenz'},
     {id: 'Dark Yashiro', name: 'Dark Yashiro', image: 'Dark_Yashiro_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Swordmaster', role: 'Antagonist'},
-    {id: 'Mirage Gordin', name: 'Mirage Gordin', image: 'TMS_Gordin_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Archer', role: 'NPC', base: 'Gordin'},
-    {id: 'Mirage Linde', name: 'Mirage Linde', image: 'TMS_Linde_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Mage', role: 'NPC', base: 'Linde'},
-    {id: 'Mirage Dolph', name: 'Mirage Dolph', image: 'TMS_Dolph_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Knight', role: 'NPC', base: 'Dolph'},
-    {id: 'Mirage Macellan', name: 'Mirage Macellan', image: 'TMS_Macellan_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Knight', role: 'NPC', base: 'Macellan'},
-    {id: 'Mirage Jagen', name: 'Mirage Jagen', image: 'TMS_Jagen_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Cavalier', role: 'NPC', base: 'Jagen'},
-    {id: 'Mirage Palla', name: 'Mirage Palla', image: 'TMS_Palla_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Pegasus Knight', role: 'NPC', base: 'Palla'},
-    {id: 'Mirage Ogma', name: 'Mirage Ogma', image: 'TMS_Ogma_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Mercenary', role: 'NPC', base: 'Ogma'},
+    {id: 'Mirage Gordin', name: 'Mirage Gordin', image: 'TMS_Gordin_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Archer', role: 'Persona', base: 'Gordin'},
+    {id: 'Mirage Linde', name: 'Mirage Linde', image: 'TMS_Linde_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Mage', role: 'Persona', base: 'Linde'},
+    {id: 'Mirage Dolph', name: 'Mirage Dolph', image: 'TMS_Dolph_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Knight', role: 'Persona', base: 'Dolph'},
+    {id: 'Mirage Macellan', name: 'Mirage Macellan', image: 'TMS_Macellan_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Knight', role: 'Persona', base: 'Macellan'},
+    {id: 'Mirage Jagen', name: 'Mirage Jagen', image: 'TMS_Jagen_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Cavalier', role: 'Persona', base: 'Jagen'},
+    {id: 'Mirage Palla', name: 'Mirage Palla', image: 'TMS_Palla_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Pegasus Knight', role: 'Persona', base: 'Palla'},
+    {id: 'Mirage Ogma', name: 'Mirage Ogma', image: 'TMS_Ogma_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Mercenary', role: 'Persona', base: 'Ogma'},
     {id: 'Mirage Gharnef', name: 'Mirage Gharnef', image: 'TMS_Gharnef_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Dark Mage', role: 'Antagonist', base: 'Gharnef'},
     {id: 'Mirage Bord', name: 'Mirage Bord', image: 'TMS_Bord_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Fighter', role: 'Antagonist', base: 'Bord'},
     {id: 'Mirage Cord', name: 'Mirage Cord', image: 'TMS_Cord_portrait.png', game: 'Tokyo Mirage Sessions #FE', Class: 'Fighter', role: 'Antagonist', base: 'Cord'},
@@ -1398,7 +1400,7 @@ var items = [
 	{id: 'Rodrigue', name: 'Rodrigue', image: 'Rodrigue_Portrait.png', game: 'Three Houses', Class: 'Cavalier', role: 'NPC'},
 	{id: 'CF Rodrigue', name: 'CF Rodrigue', image: 'Rodrigue_Portrait.png', game: 'Three Houses', Class: 'Cavalier', role: 'Antagonist', base: 'Rodrigue'},
 	{id: 'Judith', name: 'Judith', image: 'Judith_portrait.png', game: 'Three Houses', Class: 'Lord', role: 'NPC'},
-	{id: 'Monica', name: 'Monica', image: 'Monica_FE16_Portrait.png', game: 'Three Houses', Class: 'Thief', role: 'Other'},
+	{id: 'Monica', name: 'Monica', image: 'Monica_FE16_Portrait.png', game: 'Three Houses', Class: 'Mage', role: 'Other'},
 	{id: 'Volkhard', name: 'Volkhard', image: 'Volkhard_portrait.png', game: 'Three Houses', Class: 'Dark Mage', role: 'NPC', base: 'Thales'},
 	{id: 'Ionius IX', name: 'Ionius IX', image: 'Ionius_IX_portrait.png', game: 'Three Houses', Class: 'Emperor', role: 'NPC'},
 	{id: 'Duke Aegir', name: 'Duke Aegir', image: 'Duke_Aegir_portrait.png', game: 'Three Houses', Class: 'Miscellaneous', role: 'NPC'},
@@ -1414,23 +1416,134 @@ var items = [
 	//{id: '', name: '', image: '.webp', game: 'Three Houses', Class: '', role: ''},
 	{id: 'Shez', name: 'Shez', image: 'Shez.png', game: 'Three Houses', Class: 'Mercenary', role: 'Protagonist'},
 	{id: 'Arval', name: 'Arval', image: 'Arval_Portrait.webp', game: 'Three Houses', Class: 'Dark Mage', role: 'Antagonist'},
+	{id: 'Epimenides', name: 'Epimenides', image: 'Arval_Awakened.webp', game: 'Three Houses', Class: 'Dark Mage', role: 'Antagonist', base: 'Arval'},
+	{id: 'Holst', name: 'Holst', image: 'Holst_Portrait_Three_Hopes.webp', game: 'Three Houses', Class: 'Swordmaster', role: 'Other'},
+	{id: 'Count Bergliez', name: 'Count Bergliez', image: 'Leopold_Portrait_Three_Hopes.webp', game: 'Three Houses', Class: 'Fighter', role: 'Other'},
+	{id: 'Non CB Count Bergliez', name: 'Non CB Count Bergliez', image: 'Leopold_Portrait_Three_Hopes.webp', game: 'Three Houses', Class: 'Fighter', role: 'Antagonist', base: 'Count Bergliez'},
+	{id: 'Shahid', name: 'Shahid', image: 'Shahid_Portrait_Three_Hopes.webp', game: 'Three Houses', Class: 'Wyvern Rider', role: 'Antagonist'},
+	{id: 'Count Hevring', name: 'Count Hevring', image: 'Waldemar_Portrait_Three_Hopes.webp', game: 'Three Houses', Class: 'Mage', role: 'Other'},
+	{id: 'Non CB Count Hevring', name: 'Count Hevring', image: 'Waldemar_Portrait_Three_Hopes.webp', game: 'Three Houses', Class: 'Mage', role: 'Antagonist', base: 'Count Hevring'},
+	{id: 'Margrave Gautier', name: 'Margrave Gautier', image: 'Matthias_Portrait_Three_Hopes.webp', game: 'Three Houses', Class: 'Cavalier', role: 'Other'},
+	{id: 'Non AB Margrave Gautier', name: 'Non AB Margrave Gautier', image: 'Matthias_Portrait_Three_Hopes.webp', game: 'Three Houses', Class: 'Cavalier', role: 'Antagonist'},
+	{id: 'Count Gloucester', name: 'Count Gloucester', image: 'Count_Gloucester_Portrait_Three_Hopes.webp', game: 'Three Houses', Class: 'Cavalier', role: 'Other'},
+	{id: 'Other Route Count Gloucester', name: 'Other Route Count Gloucester', image: 'Count_Gloucester_Portrait_Three_Hopes.webp', game: 'Three Houses', Class: 'Cavalier', role: 'Antagonist'},
+	{id: 'Rufus', name: 'Rufus', image: 'Rufus_Portrait_Three_Hopes.webp', game: 'Three Houses', Class: 'Mage Knight', role: 'Antagonist'},
+	{id: 'Count Varley', name: 'Count Varley', image: 'Gr goire_Portrait_Three_Hopes.webp', game: 'Three Houses', Class: 'Healer', role: 'Antagonist'},
 	
-	/*
-	Shez
-	Arvel
-	Holst
-	Shahid
-	Count Bergliez
-	Count Hevring
-	Margrave Gautier
-	Count Gloucester
-	Rufus
-        Count Varley
-	
-	*/
 	
 	
 	//Engage
+	//{id: '', name: '', image: '.webp', game: 'Engage', Class: '', role: ''},
+	
+	//Lythos
+	{id: 'Alear', name: 'Alear', image: 'Alear.png', game: 'Engage', Class: 'Lord', role: 'Protagonist'},
+	{id: 'Vander', name: 'Vander', image: 'VanderFE17Portrait.webp', game: 'Engage', Class: 'Cavalier', role: 'Other'},
+	{id: 'Clanne', name: 'Clanne', image: 'ClanneFE17Portrait.webp', game: 'Engage', Class: 'Mage', role: 'Other'},
+	{id: 'Framme', name: 'Framme', image: 'FrammeFE17Portrait.webp', game: 'Engage', Class: 'Healer', role: 'Other'},
+	
+	////{id: '', name: '', image: '.webp', game: 'Engage', Class: '', role: 'Other'},
+	
+	//Friene
+	{id: 'Alfred', name: 'Alfred', image: 'AlfredFE17Portrait.webp', game: 'Engage', Class: 'Cavalier', role: 'Other'},
+	{id: 'Celine', name: 'Celine', image: 'C lineFE17Portrait.webp', game: 'Engage', Class: 'Mage', role: 'Other'},
+	{id: 'Boucheron', name: 'Boucheron', image: 'BoucheronFE17Portrait.webp', game: 'Engage', Class: 'Fighter', role: 'Other'},
+	{id: 'Etie', name: 'Etie', image: 'EtieFE17Portrait.webp', game: 'Engage', Class: 'Archer', role: 'Other'},
+	{id: 'Louis', name: 'Louis', image: 'LouisFE17Portrait.webp', game: 'Engage', Class: 'Knight', role: 'Other'},
+	{id: 'Chloe', name: 'Chloe', image: 'Chlo FE17Portrait.webp', game: 'Engage', Class: 'Pegasus Knight', role: 'Other'},
+	{id: 'Jean', name: 'Jean', image: 'JeanFE17Portrait.webp', game: 'Engage', Class: 'Healer', role: 'Other'},
+	
+	//Brodia
+	{id: 'Diamant', name: 'Diamant', image: 'DiamantFE17Portrait.webp', game: 'Engage', Class: 'Lord', role: 'Other'},
+	{id: 'Alcryst', name: 'Alcryst', image: 'AlcrystFE17Portrait.webp', game: 'Engage', Class: 'Archer', role: 'Other'},
+	{id: 'Amber', name: 'Amber', image: 'AmberFE17Portrait.webp', game: 'Engage', Class: 'Cavalier', role: 'Other'},
+	{id: 'Jade', name: 'Jade', image: 'JadeFE17Portrait.webp', game: 'Engage', Class: 'Knight', role: 'Other'},
+	{id: 'Citrinne', name: 'Citrinne', image: 'CitrinneFE17Portrait.webp', game: 'Engage', Class: 'Mage', role: 'Other'},
+	{id: 'Lapis', name: 'Lapis', image: 'LapisFE17Portrait.webp', game: 'Engage', Class: 'Swordmaster', role: 'Other'},
+	{id: 'Yunaka', name: 'Yunaka', image: 'YunakaFE17Portrait.webp', game: 'Engage', Class: 'Thief', role: 'Other'},
+	{id: 'Saphir', name: 'Saphir', image: 'SaphirFE17Portrait.webp', game: 'Engage', Class: 'Fighter', role: 'Other'},
+	
+	//Eulusia
+	{id: 'Ivy', name: 'Ivy', image: 'IvyFE17Portrait.webp', game: 'Engage', Class: 'Wyvern Rider', role: 'Other'},
+	{id: 'Hortensia', name: 'Hortensia', image: 'HortensiaFE17Portrait.webp', game: 'Engage', Class: 'Pegasus Knight', role: 'Other'},
+	{id: 'Zelkov', name: 'Zelkov', image: 'ZelkovFE17Portrait.webp', game: 'Engage', Class: 'Thief', role: 'Other'},
+	{id: 'Kagetsu', name: 'Kagetsu', image: 'KagetsuFE17Portrait.webp', game: 'Engage', Class: 'Swordmaster', role: 'Other'},
+	{id: 'Rosado', name: 'Rosado', image: 'RosadoFE17Portrait.webp', game: 'Engage', Class: 'Wyvern Rider', role: 'Other'},
+	{id: 'Goldmary', name: 'Goldmary', image: 'GoldmaryFE17Portrait.webp', game: 'Engage', Class: 'Mercenary', role: 'Other'},
+	{id: 'Lady Anna', name: 'Lady Anna', image: 'AnnaFE17Portrait.webp', game: 'Engage', Class: 'Fighter', role: 'Other'},
+	{id: 'Lindon', name: 'Lindon', image: 'LindonFE17Portrait.webp', game: 'Engage', Class: 'Mage', role: 'Other'},
+	
+	
+	//Solm
+	{id: 'Timerra', name: 'Timerra', image: 'TimerraFE17Portrait.webp', game: 'Engage', Class: 'Soldier', role: 'Other'},
+	{id: 'Fogado', name: 'Fogado', image: 'FogadoFE17Portrait.webp', game: 'Engage', Class: 'Bow Knight', role: 'Other'},
+	{id: 'Merrin', name: 'Merrin', image: 'MerrinFE17Portrait.webp', game: 'Engage', Class: 'Cavalier', role: 'Other'},
+	{id: 'Panette', name: 'Panette', image: 'PanetteFE17Portrait.webp', game: 'Engage', Class: 'Fighter', role: 'Other'},
+	{id: 'Bunet', name: 'Bunet', image: 'BunetFE17Portrait.webp', game: 'Engage', Class: 'Cavalier', role: 'Other'},
+	{id: 'Pandreo', name: 'Pandreo', image: 'PandreoFE17Portrait.webp', game: 'Engage', Class: 'Healer', role: 'Other'},
+	{id: 'Seadall', name: 'Seadall', image: 'SeadallFE17Portrait.webp', game: 'Engage', Class: 'Dancer', role: 'Other'},
+	
+	//Grandlon
+	{id: 'Veyle', name: 'Veyle', image: 'VeyleFE17Portrait.webp', game: 'Engage', Class: 'Dark Mage', role: 'Other'},
+	{id: 'Mauvier', name: 'Mauvier', image: 'MauvierFE17Portrait.webp', game: 'Engage', Class: 'Troubadour', role: 'Other'},
+	
+	
+	//Fell Xenolouge
+	{id: 'Nel', name: 'Nel', image: 'NelFE17Portrait.webp', game: 'Engage', Class: 'Dragon', role: 'Other'},
+	{id: 'Rafal', name: 'Rafal', image: 'NilFE17Portrait.webp', game: 'Engage', Class: 'Dragon', role: 'Other'},
+	
+	{id: 'Zelestia', name: 'Zelestia', image: 'ZelestiaFE17Portrait.webp', game: 'Engage', Class: 'Wyvern Rider', role: 'Other'},
+	{id: 'Gregory', name: 'Gregory', image: 'GregoryFE17Portrait.webp', game: 'Engage', Class: 'Mage', role: 'Other'},
+	{id: 'Madeline', name: 'Madeline', image: 'MadelineFE17Portrait.webp', game: 'Engage', Class: 'Knight', role: 'Other'},
+	
+	//Emblems, add pictures
+	//{id: '', name: '', image: '.webp', game: 'Engage', Class: '', role: 'Persona', base: ''},
+	{id: 'Emblem Alear', name: 'Emblem Alear', image: 'Emblem Alear.png', game: 'Engage', Class: 'Lord', role: 'Persona', base: 'Alear'},
+	{id: 'Emblem Marth', name: 'Emblem Marth', image: 'MarthFE17Portrait.webp', game: 'Engage', Class: 'Lord', role: 'Persona', base: 'Marth'},
+	{id: 'Emblem Celica', name: 'Emblem Celica', image: 'CelicaFE17Portrait.webp', game: 'Engage', Class: 'Mage', role: 'Persona', base: 'Celica'},
+	{id: 'Emblem Sigurd', name: 'Emblem Sigurd', image: 'SigurdFE17Portrait.webp', game: 'Engage', Class: 'Lord', role: 'Persona', base: 'Sigurd'},
+	{id: 'Emblem Lief', name: 'Emblem Lief', image: 'LeifFE17Portrait.webp', game: 'Engage', Class: 'Lord', role: 'Persona', base: 'Lief'},
+	{id: 'Emblem Roy', name: 'Emblem Roy', image: 'RoyFE17Portrait.webp', game: 'Engage', Class: 'Lord', role: 'Persona', base: 'Roy'},
+	{id: 'Emblem Lyn', name: 'Emblem Lyn', image: 'LynFE17Portrait.webp', game: 'Engage', Class: 'Swordmaster', role: 'Persona', base: 'Lyn'},
+	{id: 'Emblem Eirika', name: 'Emblem Eirika', image: 'EirikaFE17Portrait.webp', game: 'Engage', Class: 'Lord', role: 'Persona', base: 'Eirika'},
+	{id: 'Emblem Ephraim', name: 'Emblem Ephraim', image: 'EphraimFE17Portrait.webp', game: 'Engage', Class: 'Lord', role: 'Persona', base: 'Ephraim'},
+	{id: 'Emblem Ike', name: 'Emblem Ike', image: 'IkeFE17Portrait.webp', game: 'Engage', Class: 'Mercenary', role: 'Persona', base: 'Ike'},
+	{id: 'Emblem Micaiah', name: 'Emblem Micaiah', image: 'MicaiahFE17Portrait.webp', game: 'Engage', Class: 'Light Mage', role: 'Persona', base: 'Micaiah'},
+	{id: 'Emblem Lucina', name: 'Emblem Lucina', image: 'LucinaFE17Portrait.webp', game: 'Engage', Class: 'Lord', role: 'Persona', base: 'Lucina'},
+	{id: 'Emblem Corrin', name: 'Emblem Corrin', image: 'FCorrinFE17Portrait.webp', game: 'Engage', Class: 'Dragon', role: 'Persona', base: 'Corrin'},
+	{id: 'Emblem Byleth', name: 'Emblem Byleth', image: 'MBylethFE17Portrait.webp', game: 'Engage', Class: 'Mercenary', role: 'Persona', base: 'Byleth'},
+	//DLC
+	{id: 'Emblem Edelgard', name: 'Emblem Edelgard', image: 'EdelgardFE17Portrait.webp', game: 'Engage', Class: 'Emperor', role: 'Persona', base: 'Edelgard'},
+	{id: 'Emblem Dimitri', name: 'Emblem Dimitri', image: 'DimitriFE17Portrait.webp', game: 'Engage', Class: 'Lord', role: 'Persona', base: 'Dimitri'},
+	{id: 'Emblem Claude', name: 'Emblem Claude', image: 'ClaudeFE17Portrait.webp', game: 'Engage', Class: 'Archer', role: 'Persona', base: 'Claude'},
+	{id: 'Emblem Tiki', name: 'Emblem Tiki', image: 'TikiFE17Portrait.webp', game: 'Engage', Class: 'Dragon', role: 'Persona', base: 'Tiki'},
+	{id: 'Emblem Hector', name: 'Emblem Hector', image: 'HectorFE17Portrait.webp', game: 'Engage', Class: 'Knight', role: 'Persona', base: 'Hector'},
+	{id: 'Emblem Soren', name: 'Emblem Soren', image: 'SorenFE17Portrait.webp', game: 'Engage', Class: 'Mage', role: 'Persona', base: 'Soren'},
+	{id: 'Emblem Camilla', name: 'Emblem Camilla', image: 'CamillaFE17Portrait.webp', game: 'Engage', Class: 'Wyvern Rider', role: 'Persona', base: 'Camilla'},
+	{id: 'Emblem Chrom', name: 'Emblem Chrom', image: 'ChromFE17Portrait.webp', game: 'Engage', Class: 'Lord', role: 'Persona', base: 'Chrom'},
+	{id: 'Emblem Robin', name: 'Emblem Robin', image: 'RobinFE17Portrait.webp', game: 'Engage', Class: 'Mage', role: 'Persona', base: 'Robin'},
+	{id: 'Emblem Veronica', name: 'Emblem Veronica', image: 'VeronicaFE17Portrait.webp', game: 'Engage Veronica', Class: 'Dark Mage', role: 'Persona', base: 'Veronica'},
+	
+	//{id: '', name: '', image: '.webp', game: 'Engage', Class: '', role: 'NPC'},
+	//NPCs
+	{id: 'Sommie', name: 'Sommie', image: 'SommieFE17Portrait.webp', game: 'Engage', Class: 'Miscellaneous', role: 'NPC'},
+	{id: 'Lumera', name: 'Lumera', image: 'LumeraFE17Portrait.webp', game: 'Engage', Class: 'Dragon', role: 'NPC'},
+	{id: 'Eve', name: 'Eve', image: 'veFE17Portrait.webp', game: 'Engage', Class: 'Healer', role: 'NPC'},
+	{id: 'Morion', name: 'Morion', image: 'MorionFE17Portrait.webp', game: 'Engage', Class: 'Mercenary', role: 'NPC'},
+	{id: 'Seforia', name: 'Seforia', image: 'SeforiaFE17Portrait.webp', game: 'Engage', Class: 'Wyvern Rider', role: 'NPC'},
+	{id: 'Sean', name: 'Sean', image: 'SeanFE17Portrait.webp', game: 'Engage', Class: 'Healer', role: 'NPC'},
+	//If Choose Your Legends adds the shopkeepers, so will I
+	
+	//Antagonists
+	//{id: '', name: '', image: '.webp', game: 'Engage', Class: '', role: 'Antagonist'},
+	{id: 'Hyacinth', name: 'Hyacinth', image: 'HyacinthFE17Portrait.webp', game: 'Engage', Class: 'Healer', role: 'Antagonist'},
+	{id: 'Zephia', name: 'Zephia', image: 'ZephiaFE17Portrait.webp', game: 'Engage', Class: 'Wyvern Rider', role: 'Antagonist'},
+	{id: 'Griss', name: 'Griss', image: 'GrissFE17Portrait.webp', game: 'Engage', Class: 'Mage', role: 'Antagonist'},
+	{id: 'Marni', name: 'Marni', image: 'MarniFE17Portrait.webp', game: 'Engage', Class: 'Knight', role: 'Antagonist'},
+	{id: 'Dark Vayle', name: 'Dark Vayle', image: 'Dark Vayle.png', game: 'Engage', Class: 'Dark Mage', role: 'Antagonist', base: 'Vayle'},
+	{id: 'Sombron', name: 'Sombron', image: 'SombronFE17Portrait.webp', game: 'Engage', Class: 'Dragon', role: 'Antagonist'},
+	{id: 'Nil', name: 'Nil', image: 'NilFE17Portrait.webp', game: 'Engage', Class: 'Dragon', role: 'Antagonist'},
+	
+	
 	
     //Cipher
     //{id: '', name: '', image: '.png', game: '', Class: '', role: ''},
@@ -1449,9 +1562,9 @@ var myPicker = new picker.Picker({
     items: items,
     localStorageKey: 'picker-state',
     defaultSettings: {
-        games: ['Awakening', 'Fates', 'Shadows of Valencia', 'Mystery of the Emblem', 'Binding Blade', 'Blazing Blade', 'Sacred Stones', 'Cipher', 'Genealogy of the Holy War', 'Thracia 776', 'Tellius', 'Three Houses', 'Tokyo Mirage Sessions #FE', 'Heroes', 'Warriors'],
+        games: ['Awakening', 'Fates', 'Shadows of Valencia', 'Mystery of the Emblem', 'Binding Blade', 'Blazing Blade', 'Sacred Stones', 'Cipher', 'Genealogy of the Holy War', 'Thracia 776', 'Tellius', 'Three Houses', 'Tokyo Mirage Sessions #FE', 'Heroes', 'Warriors', 'Engage'],
         Classes: ['Mage', 'Lord', 'Dragon', 'Healer', 'Cavalier', 'Archer', 'Fighter', 'Pegasus Knight', 'Knight', 'Villager', 'Swordmaster', 'Troubadour', 'Beast', 'Thief', 'Mercenary', 'Dark Mage', 'Dancer', 'Wyvern Rider', 'Mage Knight', 'Enemy Ax', 'Bow Knight', 'Emperor', 'Soldier', 'Goddess', 'Miscellaneous'],
-        roles: ['Protagonist', 'Antagonist', 'Other', 'NPC'],
+        roles: ['Protagonist', 'Antagonist', 'Other', 'NPC', 'Persona'],
         noDuplicates: true
     },
 /* 
