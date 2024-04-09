@@ -1627,6 +1627,7 @@ var pickerUI = new PickerUI(myPicker, {
             Classes: '.Classes',
             roles: '.roles',
             noDuplicates: '#no-Duplicates'
+	}
         },
       onUpdate: function(updateType) {
         var total = this.picker.state.items.length;
@@ -1639,7 +1640,7 @@ var pickerUI = new PickerUI(myPicker, {
         $("#remaining").text(remaining);
 
         updateProgressBar((1 - (remaining / this.picker.state.roundSize)) * 100, updateType);
-    }
+    
     }
 });
 
